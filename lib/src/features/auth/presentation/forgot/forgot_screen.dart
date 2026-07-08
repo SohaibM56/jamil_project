@@ -19,14 +19,10 @@ class ForgotScreen extends GetView<ForgotController> {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: MediaQuery.viewPaddingOf(context).bottom,
+          Positioned.fill(
             child: Image.asset(
               AppAssets.forgotBg,
-              fit: BoxFit.fitWidth,
-              alignment: Alignment.bottomCenter,
+              fit: BoxFit.cover,
             ),
           ),
           SafeArea(

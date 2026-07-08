@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../constants/app_assets.dart';
+
 class DashboardPageScaffold extends StatelessWidget {
   const DashboardPageScaffold({
     super.key,
@@ -21,17 +23,32 @@ class DashboardPageScaffold extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          SizedBox(
+          Container(
             height: headerHeight.h,
             width: double.infinity,
-            child: CustomPaint(painter: _HeaderPatternPainter()),
+            decoration:  BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(AppAssets.homeBg),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
           SafeArea(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(42.w, 32.h, 42.w, 0),
+              padding: EdgeInsets.fromLTRB(42.w, 20.h, 42.w, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Image.asset(
+                      AppAssets.blackLogo,
+                      width: 80.w,
+                      height: 40.h,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  SizedBox(height: 10.h),
                   Text(
                     title,
                     style: const TextStyle(

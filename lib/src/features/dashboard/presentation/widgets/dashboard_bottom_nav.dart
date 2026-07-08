@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import '../../../../constants/app_assets.dart';
 import '../../../../constants/app_colors.dart';
 
 class DashboardBottomNav extends StatelessWidget {
@@ -58,6 +58,7 @@ class DashboardBottomNav extends StatelessWidget {
                 _icons.length,
                 (index) => _DashboardNavItem(
                   icon: _icons[index],
+                  index: index,
                   isSelected: currentIndex == index,
                   onTap: () => onTap(index),
                 ),
@@ -73,11 +74,13 @@ class DashboardBottomNav extends StatelessWidget {
 class _DashboardNavItem extends StatelessWidget {
   const _DashboardNavItem({
     required this.icon,
+    required this.index,
     required this.isSelected,
     required this.onTap,
   });
 
   final IconData icon;
+  final int index;
   final bool isSelected;
   final VoidCallback onTap;
 
@@ -113,10 +116,18 @@ class _DashboardNavItem extends StatelessWidget {
                 ),
               ],
             ),
-            child: Icon(
-              icon,
-              size: 32.sp,
-              color: isSelected ? AppColors.primaryTeal : Colors.black,
+            child: Center(
+              child: isSelected
+                  ? Icon(
+                      icon,
+                      size: 32.sp,
+                      color: AppColors.primaryTeal,
+                    )
+                  : Icon(
+                      icon,
+                      size: 32.sp,
+                      color: Colors.black,
+                    ),
             ),
           ),
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../constants/app_assets.dart';
 import '../../../constants/app_colors.dart';
 import '../../auth/presentation/auth_controller.dart';
 import '../../dashboard/presentation/dashboard_controller.dart';
@@ -25,30 +26,33 @@ class SettingsScreen extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              height: 66.h,
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              height: 72.h,
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(
-                color: AppColors.primaryTeal.withValues(alpha: 0.45),
-                border: Border.all(color: Colors.black),
+                color: const Color(0xFFBAEFE3),
+                border: Border.all(color: Colors.black, width: 1.w),
                 borderRadius: BorderRadius.circular(18.r),
               ),
               child: Row(
                 children: [
-                  Container(
-                    width: 44.w,
-                    height: 44.w,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.black),
-                    ),
-                    child: const Icon(
-                      Icons.person_outline_rounded,
-                      size: 32,
-                      color: Color(0xFF8DC7BB),
+                  Obx(
+                    () => Container(
+                      width: 48.w,
+                      height: 48.w,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        border:
+                            Border.all(color: const Color(0xFF666666), width: 1.w),
+                        image: DecorationImage(
+                          image: NetworkImage(
+                              dashboardController.profileImageUrl.value),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
-                  SizedBox(width: 20.w),
+                  SizedBox(width: 16.w),
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -58,18 +62,18 @@ class SettingsScreen extends StatelessWidget {
                           'Abdullah Jamil',
                           style: TextStyle(
                             fontFamily: 'Satoshi',
-                            fontSize: 20.sp,
+                            fontSize: 18.sp,
                             fontWeight: FontWeight.w800,
-                            height: 1,
+                            height: 1.2,
                           ),
                         ),
-                        SizedBox(height: 6.h),
                         Text(
                           '--',
                           style: TextStyle(
                             fontFamily: 'Satoshi',
-                            fontSize: 16.sp,
-                            height: 1,
+                            fontSize: 14.sp,
+                            color: const Color(0xFF666666),
+                            height: 1.2,
                           ),
                         ),
                       ],
@@ -77,25 +81,29 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   Icon(
                     Icons.edit_outlined,
-                    color: const Color(0xFF6E968E),
+                    color: const Color(0xFFB0B0B0),
                     size: 24.sp,
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 18.h),
+            SizedBox(height: 24.h),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 28.w),
+              padding: EdgeInsets.symmetric(horizontal: 4.w),
               child: Row(
                 children: [
-                  SettingsGlyph(type: SettingsIconType.darkMode, size: 20.w),
-                  SizedBox(width: 4.w),
+                  Icon(
+                    Icons.contrast_rounded,
+                    size: 24.sp,
+                    color: Colors.black,
+                  ),
+                  SizedBox(width: 10.w),
                   Expanded(
                     child: Text(
                       'Dark Mode',
                       style: TextStyle(
                         fontFamily: 'Satoshi',
-                        fontSize: 16.sp,
+                        fontSize: 18.sp,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -104,9 +112,9 @@ class SettingsScreen extends StatelessWidget {
                     () => ResponsiveSwitch(
                       value: dashboardController.isDarkMode.value,
                       onChanged: dashboardController.toggleDarkMode,
-                      width: 38.w,
-                      height: 20.h,
-                      thumbSize: 18.w,
+                      width: 44.w,
+                      height: 24.h,
+                      thumbSize: 20.w,
                       inactiveColor: Colors.black,
                       thumbColor: Colors.white,
                     ),
@@ -114,7 +122,7 @@ class SettingsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 30.h),
+            SizedBox(height: 32.h),
             _SettingsOption(
               label: 'Privacy policy',
               iconType: SettingsIconType.privacy,
@@ -123,7 +131,7 @@ class SettingsScreen extends StatelessWidget {
                 'Privacy policy will be available soon.',
               ),
             ),
-            const _SettingsDivider(),
+            SizedBox(height: 16.h),
             _SettingsOption(
               label: 'Terms and conditions',
               iconType: SettingsIconType.terms,
@@ -132,7 +140,7 @@ class SettingsScreen extends StatelessWidget {
                 'Terms and conditions will be available soon.',
               ),
             ),
-            const _SettingsDivider(),
+            SizedBox(height: 16.h),
             Obx(
               () => _SettingsOption(
                 label: authController.isLoading.value
@@ -144,20 +152,18 @@ class SettingsScreen extends StatelessWidget {
                     : authController.logout,
               ),
             ),
-            const _SettingsDivider(),
-            SizedBox(height: 0.h),
-            Container(
-              height: 50.h,
-              margin: EdgeInsets.symmetric(horizontal: 0.w),
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF84E55),
-                borderRadius: BorderRadius.circular(8.r),
+            SizedBox(height: 16.h),
+            GestureDetector(
+              onTap: () => Get.snackbar(
+                'Delete account',
+                'Account deletion flow will be available soon.',
               ),
-              child: GestureDetector(
-                onTap: () => Get.snackbar(
-                  'Delete account',
-                  'Account deletion flow will be available soon.',
+              child: Container(
+                height: 52.h,
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF84E55),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Row(
                   children: [
@@ -166,12 +172,13 @@ class SettingsScreen extends StatelessWidget {
                         'Delete my account',
                         style: TextStyle(
                           fontFamily: 'Satoshi',
-                          fontSize: 15.sp,
+                          fontSize: 16.sp,
                           color: Colors.white,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
-                    Icon(Icons.close_rounded, color: Colors.white, size: 18.sp),
+                    Icon(Icons.cancel_outlined, color: Colors.white, size: 20.sp),
                   ],
                 ),
               ),
@@ -199,12 +206,11 @@ class _SettingsOption extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 50.h,
-        margin: EdgeInsets.zero,
+        height: 52.h,
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         decoration: BoxDecoration(
           color: const Color(0xFFF1F7F6),
-          borderRadius: BorderRadius.circular(8.r),
+          borderRadius: BorderRadius.circular(12.r),
         ),
         child: Row(
           children: [
@@ -213,30 +219,20 @@ class _SettingsOption extends StatelessWidget {
                 label,
                 style: TextStyle(
                   fontFamily: 'Satoshi',
-                  fontSize: 15.sp,
+                  fontSize: 16.sp,
                   color: const Color(0xFF555555),
                   fontWeight: FontWeight.w600,
                 ),
               ),
             ),
-            SettingsGlyph(type: iconType, size: 23.w),
+            SettingsGlyph(
+              type: iconType,
+              size: 22.sp,
+              color: const Color(0xFF666666),
+            ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class _SettingsDivider extends StatelessWidget {
-  const _SettingsDivider();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 264.w,
-      height: 1.h,
-      margin: EdgeInsets.symmetric(vertical: 12.h),
-      color: const Color(0xFFD8D8D8),
     );
   }
 }

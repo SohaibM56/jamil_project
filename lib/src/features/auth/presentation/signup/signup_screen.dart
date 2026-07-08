@@ -69,6 +69,16 @@ class SignupScreen extends GetView<SignupController> {
                         ),
                       ),
                     ),
+                    SizedBox(height: AppSizes.p16.h),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Image.asset(
+                        AppAssets.signupPageIcons,
+                        width: 120.w,
+                        height: 40.h,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
                     SizedBox(height: AppSizes.p32.h),
                     // Title
                     const AuthText(

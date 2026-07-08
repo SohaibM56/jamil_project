@@ -4,15 +4,32 @@ class DashboardController extends GetxController {
   final currentIndex = 0.obs;
   final isDarkMode = false.obs;
   final isSocialMediaExpanded = true.obs;
+  final profileImageUrl = 'https://i.pravatar.cc/300'.obs;
   final cardName = 'Abdullah Jamil'.obs;
   final cardTitle = 'Engineer'.obs;
   final cardPhone = '0501829941'.obs;
   final cardEmail = 'othermm5@gmail.com'.obs;
-  final profileLinks = <String, bool>{'Whatsapp': true, 'Instagram': true}.obs;
+  final profileLinks = <String, bool>{
+    'Whatsapp': true,
+    'Instagram': true,
+    'TikTok': true,
+    'Facebook': true,
+    'LinkedIn': true,
+    'Snapchat': true,
+    'Telegram': true,
+    'X (Twitter)': true,
+    'YouTube': true,
+  }.obs;
   final socialLinks = <String, bool>{
     'Whatsapp': false,
     'Instagram': false,
     'TikTok': false,
+    'Facebook': false,
+    'LinkedIn': false,
+    'Snapchat': false,
+    'Telegram': false,
+    'X (Twitter)': false,
+    'YouTube': false,
   }.obs;
   final socialLinkUrls = <String, String>{}.obs;
 

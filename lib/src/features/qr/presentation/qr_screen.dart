@@ -18,34 +18,45 @@ class QRScreen extends StatelessWidget {
         children: [
           const Spacer(),
           Container(
-            width: 220.w,
-            height: 220.w,
-            padding: EdgeInsets.all(14.w),
+            width: 260.w,
+            height: 260.w,
+            padding: EdgeInsets.all(20.w),
             decoration: BoxDecoration(
               color: Colors.white,
-              border: Border.all(color: Colors.black, width: 3.w),
-              borderRadius: BorderRadius.circular(28.r),
+              border: Border.all(color: Colors.black, width: 2.w),
+              borderRadius: BorderRadius.circular(32.r),
             ),
             child: PrettyQrView.data(data: _qrData),
           ),
-          SizedBox(height: 34.h),
+          SizedBox(height: 50.h),
           Container(
-            width: 312.w,
-            padding: EdgeInsets.symmetric(horizontal: 34.w, vertical: 10.h),
+            width: 320.w,
+            padding: EdgeInsets.fromLTRB(20.w, 10.h, 12.w, 10.h),
             decoration: BoxDecoration(
-              color: const Color(0xFFF6F6F6),
-              borderRadius: BorderRadius.circular(10.r),
+              color: const Color(0xFFF1F7F6),
+              borderRadius: BorderRadius.circular(12.r),
             ),
-            child: Text(
-              'my.jamilcards.com/#/vqrD7Ij4rWbzx\nGOAwNdmMcyrJO83',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Satoshi',
-                fontSize: 12.sp,
-                height: 1.3,
-                color: const Color(0xFF777777),
-                fontWeight: FontWeight.w600,
-              ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'my.jamilcards.com/#/vqrD7Ij4rWbzx\nGOAwNdmMcyrJO83',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Satoshi',
+                      fontSize: 13.sp,
+                      height: 1.3,
+                      color: const Color(0xFF777777),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                Icon(
+                  Icons.more_vert_rounded,
+                  color: const Color(0xFFB0B0B0),
+                  size: 20.sp,
+                ),
+              ],
             ),
           ),
           const Spacer(),

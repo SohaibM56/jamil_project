@@ -60,6 +60,11 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/logos/
+    - assets/images/backgrounds/
+    - assets/icons/
+    - assets/icons/nav/
+    - assets/icons/social/
 
   fonts:
     - family: Satoshi

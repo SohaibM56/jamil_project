@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../constants/app_assets.dart';
 import '../../../constants/app_colors.dart';
 import '../../dashboard/presentation/dashboard_controller.dart';
 import '../../dashboard/presentation/widgets/dashboard_icons.dart';
@@ -20,26 +21,27 @@ class AccountScreen extends StatelessWidget {
       title: 'My Card',
       subtitle: 'Tap, Connect, Share.',
       child: SingleChildScrollView(
+        clipBehavior: Clip.none,
         padding: EdgeInsets.fromLTRB(42.w, 0, 42.w, 28.h),
         child: Column(
           children: [
-            SizedBox(height: 4.h),
+            SizedBox(height: 30.h),
             Stack(
               clipBehavior: Clip.none,
               children: [
                 Container(
                   width: double.infinity,
                   height: 198.h,
-                  padding: EdgeInsets.fromLTRB(30.w, 55.h, 20.w, 20.h),
+                  padding: EdgeInsets.fromLTRB(30.w, 45.h, 20.w, 20.h),
                   decoration: BoxDecoration(
-                    color: AppColors.primaryTeal.withValues(alpha: 0.45),
-                    border: Border.all(color: Colors.black, width: 2.3.w),
+                    color: const Color(0xFFBAEFE3),
+                    border: Border.all(color: Colors.black, width: 2.w),
                     borderRadius: BorderRadius.circular(14.r),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.13),
-                        blurRadius: 18.r,
-                        offset: Offset(0, 13.h),
+                        color: Colors.black.withValues(alpha: 0.1),
+                        blurRadius: 20.r,
+                        offset: Offset(0, 10.h),
                       ),
                     ],
                   ),
@@ -53,17 +55,16 @@ class AccountScreen extends StatelessWidget {
                             fontFamily: 'Satoshi',
                             fontSize: 24.sp,
                             fontWeight: FontWeight.w800,
-                            height: 1,
+                            height: 1.1,
                           ),
                         ),
-                        SizedBox(height: 10.h),
                         Text(
                           dashboardController.cardTitle.value,
                           style: TextStyle(
                             fontFamily: 'Satoshi',
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w800,
-                            height: 1,
+                            height: 1.1,
                           ),
                         ),
                         SizedBox(height: 10.h),
@@ -72,14 +73,15 @@ class AccountScreen extends StatelessWidget {
                           style: TextStyle(
                             fontFamily: 'Satoshi',
                             fontSize: 15.sp,
+                            height: 1.2,
                           ),
                         ),
-                        SizedBox(height: 5.h),
                         Text(
                           dashboardController.cardEmail.value,
                           style: TextStyle(
                             fontFamily: 'Satoshi',
                             fontSize: 15.sp,
+                            height: 1.2,
                           ),
                         ),
                       ],
@@ -87,37 +89,61 @@ class AccountScreen extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  top: -30.h,
-                  right: -16.w,
-                  child: Container(
-                    width: 85.w,
-                    height: 85.w,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.black, width: 3.w),
-                    ),
-                    child: Icon(
-                      Icons.person_outline_rounded,
-                      size: 66.sp,
-                      color: const Color(0xFF8DC7BB),
-                    ),
+                  top: -10.h,
+                  right: -10.w,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Obx(
+                        () => Container(
+                          width: 100.w,
+                          height: 100.w,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.black, width: 2.w),
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  dashboardController.profileImageUrl.value),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 2.h,
+                        right: 2.w,
+                        child: Container(
+                          padding: EdgeInsets.all(5.w),
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF666666),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.edit,
+                            size: 12.sp,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Positioned(
-                  right: 13.w,
+                  right: 15.w,
                   bottom: 15.h,
-                  child: const _SmallRoundIcon(icon: Icons.visibility),
-                ),
-                Positioned(
-                  right: 13.w,
-                  bottom: 45.h,
-                  child: _SmallRoundIcon(
-                    icon: Icons.edit,
-                    onTap: () => showEditCardDialog(
-                      context: context,
-                      onUpdate: dashboardController.updateCard,
-                    ),
+                  child: Column(
+                    children: [
+                      _SmallRoundIcon(
+                        icon: Icons.edit,
+                        onTap: () => showEditCardDialog(
+                          context: context,
+                          onUpdate: dashboardController.updateCard,
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      const _SmallRoundIcon(icon: Icons.visibility_outlined),
+                    ],
                   ),
                 ),
               ],
@@ -161,6 +187,83 @@ class AccountScreen extends StatelessWidget {
                     dashboardController.profileLinks['Instagram'] ?? false,
                 onChanged: (value) =>
                     dashboardController.toggleProfileLink('Instagram', value),
+              ),
+            ),
+            SizedBox(height: 20.h),
+            Obx(
+              () => _ProfileLinkRow(
+                label: 'TikTok',
+                iconType: SocialIconType.tiktok,
+                isEnabled:
+                    dashboardController.profileLinks['TikTok'] ?? false,
+                onChanged: (value) =>
+                    dashboardController.toggleProfileLink('TikTok', value),
+              ),
+            ),
+            SizedBox(height: 20.h),
+            Obx(
+              () => _ProfileLinkRow(
+                label: 'Facebook',
+                iconType: SocialIconType.facebook,
+                isEnabled:
+                    dashboardController.profileLinks['Facebook'] ?? false,
+                onChanged: (value) =>
+                    dashboardController.toggleProfileLink('Facebook', value),
+              ),
+            ),
+            SizedBox(height: 20.h),
+            Obx(
+              () => _ProfileLinkRow(
+                label: 'LinkedIn',
+                iconType: SocialIconType.linkedin,
+                isEnabled:
+                    dashboardController.profileLinks['LinkedIn'] ?? false,
+                onChanged: (value) =>
+                    dashboardController.toggleProfileLink('LinkedIn', value),
+              ),
+            ),
+            SizedBox(height: 20.h),
+            Obx(
+              () => _ProfileLinkRow(
+                label: 'Snapchat',
+                iconType: SocialIconType.snapchat,
+                isEnabled:
+                    dashboardController.profileLinks['Snapchat'] ?? false,
+                onChanged: (value) =>
+                    dashboardController.toggleProfileLink('Snapchat', value),
+              ),
+            ),
+            SizedBox(height: 20.h),
+            Obx(
+              () => _ProfileLinkRow(
+                label: 'Telegram',
+                iconType: SocialIconType.telegram,
+                isEnabled:
+                    dashboardController.profileLinks['Telegram'] ?? false,
+                onChanged: (value) =>
+                    dashboardController.toggleProfileLink('Telegram', value),
+              ),
+            ),
+            SizedBox(height: 20.h),
+            Obx(
+              () => _ProfileLinkRow(
+                label: 'X (Twitter)',
+                iconType: SocialIconType.x,
+                isEnabled:
+                    dashboardController.profileLinks['X (Twitter)'] ?? false,
+                onChanged: (value) =>
+                    dashboardController.toggleProfileLink('X (Twitter)', value),
+              ),
+            ),
+            SizedBox(height: 20.h),
+            Obx(
+              () => _ProfileLinkRow(
+                label: 'YouTube',
+                iconType: SocialIconType.youtube,
+                isEnabled:
+                    dashboardController.profileLinks['YouTube'] ?? false,
+                onChanged: (value) =>
+                    dashboardController.toggleProfileLink('YouTube', value),
               ),
             ),
           ],
@@ -216,32 +319,51 @@ class _ProfileLinkRow extends StatelessWidget {
     return Container(
       height: 48.h,
       decoration: BoxDecoration(
-        color: const Color(0xFFF4F4F4),
-        borderRadius: BorderRadius.circular(9.r),
+        color: const Color(0xFFF1F7F6),
+        borderRadius: BorderRadius.circular(8.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
-            blurRadius: 16.r,
-            offset: Offset(0, 9.h),
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10.r,
+            offset: Offset(0, 4.h),
           ),
         ],
       ),
       child: Row(
         children: [
-          SizedBox(width: 36.w),
-          SocialIcon(type: iconType, size: 30.w),
-          SizedBox(width: 58.w),
+          Padding(
+            padding: EdgeInsets.only(left: 12.w, right: 8.w),
+            child: Icon(
+              Icons.edit_outlined,
+              size: 16.sp,
+              color: const Color(0xFFB0B0B0),
+            ),
+          ),
+          Container(
+            width: 1,
+            height: 24.h,
+            color: const Color(0xFFE0E0E0),
+          ),
+          SizedBox(width: 12.w),
+          SocialIcon(type: iconType, size: 28.w),
+          SizedBox(width: 24.w),
           Expanded(
             child: Text(
               label,
               style: TextStyle(
                 fontFamily: 'Satoshi',
-                fontSize: 18.sp,
+                fontSize: 16.sp,
                 color: const Color(0xFF666666),
               ),
             ),
           ),
-          ResponsiveSwitch(value: isEnabled, onChanged: onChanged),
+          ResponsiveSwitch(
+            value: isEnabled,
+            onChanged: onChanged,
+            width: 40.w,
+            height: 22.h,
+            thumbSize: 18.w,
+          ),
           SizedBox(width: 12.w),
         ],
       ),

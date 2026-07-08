@@ -26,7 +26,6 @@ class LoginScreen extends GetView<LoginController> {
             child: Image.asset(
               AppAssets.loginBg,
               fit: BoxFit.cover,
-              alignment: Alignment.bottomCenter,
             ),
           ),
           SafeArea(
@@ -58,7 +57,17 @@ class LoginScreen extends GetView<LoginController> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 60.h),
+                  SizedBox(height: 40.h),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Image.asset(
+                      AppAssets.whiteLogo,
+                      width: 100.w,
+                      height: 50.h,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  SizedBox(height: 20.h),
                   const AuthText.brand('Jamil Cards'),
                   SizedBox(height: 38.h),
                   const AuthText.subtitle('Sign in your account'),
