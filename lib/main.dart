@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'src/app.dart';
-import 'src/bindings/app_bindings.dart';
+import 'package:jamil_project/src/config/app_bindings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

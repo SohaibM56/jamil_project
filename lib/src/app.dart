@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'routing/app_router.dart';
+import 'package:jamil_project/src/config/app_router.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key, required this.initialBinding});
