@@ -45,12 +45,11 @@ class SignupView extends GetView<SignupController> {
               // Signup Form Content
               SafeArea(
                 child: SingleChildScrollView(
-                  keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      26.h.height,
+                      10.h.height,
                       // Back Button
                       Align(
                         alignment: Alignment.centerLeft,
@@ -83,6 +82,7 @@ class SignupView extends GetView<SignupController> {
                           color: Colors.black,
                           fontWeight: FontWeight.w600,
                           height: 1,
+                          fontFamily: AppTextStyles.clashDisplay,
                         ),
                       ),
                       10.h.height,
@@ -91,6 +91,8 @@ class SignupView extends GetView<SignupController> {
                         style: AppTextStyles.customText26(
                           color: Colors.black,
                           height: 1,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: AppTextStyles.clashDisplay,
                         ),
                       ),
                       24.h.height,
@@ -146,10 +148,12 @@ class SignupView extends GetView<SignupController> {
                                     ),
                                     child: Text(
                                       'Signup',
-                                      style: AppTextStyles.customText30(
+                                      style: AppTextStyles.customText34(
                                         color: AppColors.primaryTeal,
                                         letterSpacing: -0.5,
                                         height: 1,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: AppTextStyles.clashDisplay,
                                       ),
                                     ),
                                   ),
@@ -158,7 +162,7 @@ class SignupView extends GetView<SignupController> {
                           ),
                         ),
                       ),
-                      82.h.height,
+                      100.h.height,
                       // Login Link
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -169,6 +173,7 @@ class SignupView extends GetView<SignupController> {
                               color: AppColors.mutedText,
                               letterSpacing: -0.4,
                               height: 1,
+                              fontFamily: AppTextStyles.clashDisplay,
                             ),
                           ),
                           GestureDetector(
@@ -179,6 +184,7 @@ class SignupView extends GetView<SignupController> {
                                 color: AppColors.primaryTeal,
                                 letterSpacing: -0.4,
                                 height: 1,
+                                fontFamily: AppTextStyles.clashDisplay,
                               ),
                             ),
                           ),
@@ -195,9 +201,10 @@ class SignupView extends GetView<SignupController> {
                             'by clicking signup you agree to our ',
                             style: AppTextStyles.customText(
                               color: Colors.black,
-                              fontSize: 14,
+                              fontSize: 16.sp,
                               letterSpacing: -0.4,
                               height: 1,
+                              fontFamily: AppTextStyles.clashDisplay,
                             ),
                           ),
                           GestureDetector(
@@ -206,10 +213,12 @@ class SignupView extends GetView<SignupController> {
                               'Terms & Conditions',
                               style: AppTextStyles.customText(
                                 color: AppColors.primaryTeal,
-                                fontSize: 14,
+                                fontSize: 16.sp,
                                 letterSpacing: -0.4,
                                 decoration: TextDecoration.underline,
+                                decorationColor : AppColors.primaryTeal,
                                 height: 1,
+                                fontFamily: AppTextStyles.clashDisplay,
                               ),
                             ),
                           ),
@@ -233,9 +242,10 @@ class SignupView extends GetView<SignupController> {
       child: Text(
         label,
         style: AppTextStyles.customText(
-          color: Colors.black.withValues(alpha: 0.4),
-          fontSize: 24,
+          color: Colors.black.withValues(alpha: 0.5),
+          fontSize: 24.sp,
           height: 1,
+          fontWeight: FontWeight.w500
         ),
       ),
     );

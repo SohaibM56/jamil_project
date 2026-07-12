@@ -35,7 +35,7 @@ class LoginView extends GetView<LoginController> {
               padding: EdgeInsets.symmetric(horizontal: 37.w),
               child: Column(
                 children: [
-                  42.h.height,
+                  10.h.height,
                   Align(
                     alignment: Alignment.centerLeft,
                     child: InkWell(
@@ -60,18 +60,11 @@ class LoginView extends GetView<LoginController> {
                     ),
                   ),
                   Spacer(),
-                  Text(
-                    'Jamil Cards',
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.customText(
-                      fontSize: 42.sp,
-                      color: Colors.black,
-                      letterSpacing: -1.1,
-                      fontWeight: FontWeight.w500,
-                      height: 1,
-                    ),
-                  ),
-                  36.h.height,
+
+                  Image.asset(AppAssets.loginHeaderImg, height: 70.h,),
+
+                  16.h.height,
+
                   Text(
                     'Sign in your account',
                     textAlign: TextAlign.center,
@@ -79,6 +72,8 @@ class LoginView extends GetView<LoginController> {
                       color: Colors.black,
                       letterSpacing: -1,
                       height: 1,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: AppTextStyles.clashDisplay,
                     ),
                   ),
                   64.h.height,
@@ -109,7 +104,7 @@ class LoginView extends GetView<LoginController> {
                       ),
                     ),
                   ),
-                  7.h.height,
+                  10.h.height,
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
@@ -192,7 +187,7 @@ class LoginView extends GetView<LoginController> {
                       ),
                     ],
                   ),
-                  const Spacer(flex: 2),
+                  const Spacer(flex: 3),
                 ],
               ),
             ),

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:jamil_project/src/config/sized_box_extension.dart';
 
 import 'package:jamil_project/src/config/app_colors.dart';
+import 'package:jamil_project/src/widgets/auth_text.dart';
 import 'package:jamil_project/src/widgets/dashboard_icons.dart';
 
 Future<void> showAddLinkDialog({
@@ -89,9 +90,8 @@ class _AddLinkDialogState extends State<_AddLinkDialog> {
                         inputFormatters: [
                           FilteringTextInputFormatter.deny(RegExp(r'\s')),
                         ],
-                        style: TextStyle(
-                          fontFamily: 'Satoshi',
-                          fontSize: 26.sp,
+                        style: AppTextStyles.customText26(
+                          fontFamily: AppTextStyles.clashDisplay,
                           color: Colors.black,
                           height: 1,
                         ),

@@ -3,6 +3,16 @@ class AppAssets {
   static const String iconPath = "assets/icons";
 
   static const String splashGif = '$imagePath/splash.gif';
+  static const String loginHeaderImg = '$imagePath/logos/login_header_img.jfif';
+
+  // Nav Icons
+  static const String qrScanner = '$iconPath/nav/qr_grid_scanner.svg';
+  static const String link = '$iconPath/nav/link.svg';
+
+  // Settings Icons
+  static const String privacy = '$iconPath/settings/privacy.svg';
+  static const String terms = '$iconPath/settings/terms.svg';
+  static const String logout = '$iconPath/settings/logout.svg';
 
   // Backgrounds
   static const String loginBg = '$imagePath/backgrounds/loginpage bg.png';

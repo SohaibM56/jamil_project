@@ -31,95 +31,96 @@ class LinksView extends StatelessWidget {
     final dashboardController = Get.find<DashboardController>();
 
     return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-          50.h.height,
-          Text(
-            "Smart Links",
-            style: AppTextStyles.customText34(
-              fontWeight: FontWeight.w800,
-              color: Colors.black,
-            ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+        60.h.height,
+        Text(
+          "Smart Links",
+          style: AppTextStyles.customText34(
+            fontWeight: FontWeight.w800,
+            color: Colors.black,
+            fontFamily: AppTextStyles.clashDisplay
           ),
-          2.h.height,
-          Text(
-            "Add, manage and remove links",
-            style: AppTextStyles.customText28(
-              fontWeight: FontWeight.w400,
-              color: Colors.black,
-            ),
+        ),
+        2.h.height,
+        Text(
+          "Add, manage and remove links",
+          style: AppTextStyles.customText24(
+            fontWeight: FontWeight.w400,
+            color: Colors.black,
+              fontFamily: AppTextStyles.clashDisplay
           ),
-          50.h.height,
-          GestureDetector(
-            onTap: dashboardController.toggleSocialMediaExpanded,
-            child: Material(
-              elevation: 1.sp,
-              borderRadius: BorderRadius.circular(10.r),
-              child: Container(
-                width: double.infinity,
-                height: 50.h,
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(238, 245, 244,100),
-                  borderRadius: BorderRadius.circular(10.r),
-                  border: Border.all(color: const Color(0xFFE0E0E0), width: 1.w),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05),
-                      blurRadius: 10.r,
-                      offset: Offset(0, 4.h),
+        ),
+        50.h.height,
+        GestureDetector(
+          onTap: dashboardController.toggleSocialMediaExpanded,
+          child: Material(
+            elevation: 1.sp,
+            borderRadius: BorderRadius.circular(10.r),
+            child: Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(238, 245, 244,100),
+                borderRadius: BorderRadius.circular(10.r),
+                border: Border.all(color: const Color(0xFFE0E0E0), width: 1.w),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 10.r,
+                    offset: Offset(0, 4.h),
+                  ),
+                ],
+              ),
+              child: Obx(
+                () => Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Text(
+                      'Social media',
+                      style: AppTextStyles.customText20(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                          fontFamily: AppTextStyles.clashDisplay
+                      )
                     ),
-                  ],
-                ),
-                child: Obx(
-                  () => Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Text(
-                        'Social media',
-                        style: AppTextStyles.customText20(
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          )
-                      ),
-                      Positioned(
-                        right: 18.w,
-                        child: AnimatedRotation(
-                          turns: dashboardController.isSocialMediaExpanded.value
-                              ? 0
-                              : 0.5,
-                          duration: const Duration(milliseconds: 180),
-                          child: Icon(
-                            Icons.keyboard_arrow_up_rounded,
-                            color: AppColors.primaryTeal,
-                            size: 20.sp,
-                          ),
+                    Positioned(
+                      right: 18.w,
+                      child: AnimatedRotation(
+                        turns: dashboardController.isSocialMediaExpanded.value
+                            ? 0
+                            : 0.5,
+                        duration: const Duration(milliseconds: 180),
+                        child: Icon(
+                          Icons.keyboard_arrow_up_rounded,
+                          color: AppColors.primaryTeal,
+                          size: 20.sp,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
-          30.h.height,
-          Obx(
-            () => AnimatedSize(
+        ),
+        20.h.height,
+        Obx(
+          () => Expanded(
+            child: AnimatedSize(
               duration: const Duration(milliseconds: 180),
               curve: Curves.easeOut,
               child: dashboardController.isSocialMediaExpanded.value
                   ? ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       itemCount: _socialMediaLinks.length,
                       itemBuilder: (context, index) {
                         final link = _socialMediaLinks[index];
                         return _SocialLinkRow(
                           label: link.label,
                           iconType: link.iconType,
-                          isAdded: dashboardController.socialLinks[link.label] ??
-                              false,
+                          isAdded: dashboardController.socialLinks[link.label] ?? false,
                           onTap: () => _handleSocialLinkTap(
                             context,
                             dashboardController,
@@ -132,9 +133,9 @@ class LinksView extends StatelessWidget {
                   : const SizedBox.shrink(),
             ),
           ),
-        ],
-      ).paddingHorizontal(30.w),
-    ),
+        ),
+      ],
+            ).paddingHorizontal(30.w),
     );
   }
 
@@ -169,7 +170,7 @@ class _SocialLinkRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 2.h),
-      padding: EdgeInsets.symmetric(horizontal: 10.w),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       height: 48.h,
       decoration: BoxDecoration(
         color: Color.fromRGBO(238, 245, 244,100),
@@ -190,9 +191,9 @@ class _SocialLinkRow extends StatelessWidget {
           Expanded(
             child: Text(
               label,
-              style: TextStyle(
-                fontFamily: 'Satoshi',
-                fontSize: 16.sp,
+              style: AppTextStyles.customText18(
+                fontFamily: AppTextStyles.clashDisplay,
+                fontWeight: FontWeight.w500,
                 color: Colors.black,
               ),
             ),

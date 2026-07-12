@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jamil_project/src/config/app_assets.dart';
 import 'package:jamil_project/src/config/app_colors.dart';
 
 class DashboardBottomNav extends StatelessWidget {
@@ -12,10 +14,10 @@ class DashboardBottomNav extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
 
-  static const _icons = [
-    Icons.qr_code_scanner_rounded,
+  static const List<IconData?> _icons = [
+    null,
     Icons.person_outline_rounded,
-    Icons.link_rounded,
+    null,
     Icons.settings_outlined,
   ];
 
@@ -35,14 +37,12 @@ class DashboardBottomNav extends StatelessWidget {
             child: Container(
               height: 54.h,
               decoration: BoxDecoration(
-                color: AppColors.primaryTeal.withValues(alpha: 0.45),
+                color: AppColors.primaryTealLight,
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(22),
                 ),
                 border: Border(
-                  top: BorderSide(
-                    color: AppColors.primaryTeal.withValues(alpha: 0.45),
-                  ),
+                  top: BorderSide(color: AppColors.primaryTealLight),
                 ),
               ),
             ),
@@ -57,6 +57,7 @@ class DashboardBottomNav extends StatelessWidget {
                 _icons.length,
                 (index) => _DashboardNavItem(
                   icon: _icons[index],
+                  svgAsset: index == 0 ? AppAssets.qrScanner : index ==2 ? AppAssets.link : null,
                   index: index,
                   isSelected: currentIndex == index,
                   onTap: () => onTap(index),
@@ -73,12 +74,14 @@ class DashboardBottomNav extends StatelessWidget {
 class _DashboardNavItem extends StatelessWidget {
   const _DashboardNavItem({
     required this.icon,
+    required this.svgAsset,
     required this.index,
     required this.isSelected,
     required this.onTap,
   });
 
-  final IconData icon;
+  final IconData? icon;
+  final String? svgAsset;
   final int index;
   final bool isSelected;
   final VoidCallback onTap;
@@ -97,28 +100,36 @@ class _DashboardNavItem extends StatelessWidget {
             duration: const Duration(milliseconds: 180),
             width: 58.w,
             height: 58.w,
-            margin: EdgeInsets.only(top: 6.h),
+            margin: EdgeInsets.only(top: 2.h),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: !isSelected ? Colors.white : AppColors.primaryTealLight,
               shape: BoxShape.circle,
-              border: Border.all(
-                color: isSelected
-                    ? AppColors.primaryTeal
-                    : Colors.black.withValues(alpha: 0.65),
-                width: isSelected ? 1.3.w : 0.7.w,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.12),
-                  blurRadius: 6.r,
-                  offset: Offset(0, 3.h),
-                ),
-              ],
+              border: !isSelected
+                  ? Border.all(
+                      color: Colors.black.withValues(alpha: 0.72),
+                      width: 1.w,
+                    )
+                  : null,
+              boxShadow: !isSelected
+                  ? [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.22),
+                        blurRadius: 1.r,
+                        offset: Offset(0, 2.h),
+                      ),
+                      BoxShadow(
+                        color: AppColors.primaryTeal.withValues(alpha: 0.35),
+                        blurRadius: 9.r,
+                        spreadRadius: 1.r,
+                        offset: Offset(0, 8.h),
+                      ),
+                    ]
+                  : null,
             ),
             child: Center(
-              child: isSelected
-                  ? Icon(icon, size: 32.sp, color: AppColors.primaryTeal)
-                  : Icon(icon, size: 32.sp, color: Colors.black),
+              child: svgAsset != null
+                  ? SvgPicture.asset(svgAsset!, width: 42.sp, height: 42.sp)
+                  : Icon(icon, size: 42.sp, color: Colors.black),
             ),
           ),
         ),

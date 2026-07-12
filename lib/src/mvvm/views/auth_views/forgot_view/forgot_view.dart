@@ -33,7 +33,7 @@ class ForgotView extends GetView<ForgotController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  48.h.height,
+                  10.h.height,
                   Align(
                     alignment: Alignment.centerLeft,
                     child: InkWell(

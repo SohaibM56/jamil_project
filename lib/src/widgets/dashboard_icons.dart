@@ -15,8 +15,6 @@ enum SocialIconType {
   whatsappBusiness,
 }
 
-enum SettingsIconType { darkMode, privacy, terms, logout }
-
 class SocialIcon extends StatelessWidget {
   const SocialIcon({super.key, required this.type, this.size});
 
@@ -56,31 +54,5 @@ class SocialIcon extends StatelessWidget {
       height: size ?? 30.w,
       fit: BoxFit.contain,
     );
-  }
-}
-
-class SettingsGlyph extends StatelessWidget {
-  const SettingsGlyph({super.key, required this.type, this.size, this.color});
-
-  final SettingsIconType type;
-  final double? size;
-  final Color? color;
-
-  IconData get _iconData {
-    switch (type) {
-      case SettingsIconType.darkMode:
-        return Icons.contrast_rounded;
-      case SettingsIconType.privacy:
-        return Icons.shield_outlined;
-      case SettingsIconType.terms:
-        return Icons.assignment_outlined;
-      case SettingsIconType.logout:
-        return Icons.exit_to_app_rounded;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Icon(_iconData, size: size ?? 22.sp, color: color ?? Colors.black);
   }
 }

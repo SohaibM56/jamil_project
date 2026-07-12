@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:jamil_project/src/config/app_assets.dart';
+import 'package:jamil_project/src/config/app_colors.dart';
 import 'package:jamil_project/src/config/padding_extensions.dart';
 import 'package:jamil_project/src/config/sized_box_extension.dart';
-
 import 'package:jamil_project/src/mvvm/viewModels/auth_controller/auth_controller.dart';
 import 'package:jamil_project/src/mvvm/viewModels/dashboard_controller/dashboard_controller.dart';
-import 'package:jamil_project/src/widgets/dashboard_icons.dart';
-import 'package:jamil_project/src/widgets/responsive_switch.dart';
 
 import '../../../../widgets/auth_text.dart';
 
@@ -29,6 +29,7 @@ class SettingsView extends StatelessWidget {
             style: AppTextStyles.customText34(
               fontWeight: FontWeight.w800,
               color: Colors.black,
+              fontFamily: AppTextStyles.clashDisplay,
             ),
           ),
 
@@ -52,7 +53,7 @@ class SettingsView extends StatelessWidget {
                       color: Colors.white,
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: const Color(0xFF666666),
+                        color: AppColors.primaryTealLight,
                         width: 1.w,
                       ),
                       image: DecorationImage(
@@ -75,11 +76,15 @@ class SettingsView extends StatelessWidget {
                         style: AppTextStyles.customText20(
                           fontWeight: FontWeight.w800,
                           color: Colors.black,
+                          fontFamily: AppTextStyles.clashDisplay,
                         ),
                       ),
                       Text(
                         '--',
-                        style: AppTextStyles.customText16(color: Colors.black),
+                        style: AppTextStyles.customText16(
+                          color: Colors.black,
+                          fontFamily: AppTextStyles.clashDisplay,
+                        ),
                       ),
                     ],
                   ),
@@ -93,45 +98,14 @@ class SettingsView extends StatelessWidget {
             ),
           ),
           24.h.height,
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 4.w),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.contrast_rounded, size: 25.sp, color: Colors.black),
-                5.w.width,
-                Expanded(
-                  child: Text(
-                    'Dark Mode',
-                    style: AppTextStyles.customText22(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-                Obx(
-                  () => ResponsiveSwitch(
-                    value: dashboardController.isDarkMode.value,
-                    onChanged: dashboardController.toggleDarkMode,
-                    width: 44.w,
-                    height: 24.h,
-                    thumbSize: 20.w,
-                    inactiveColor: Colors.black,
-                    thumbColor: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          32.h.height,
           _SettingsOption(
             label: 'Privacy policy',
-            iconType: SettingsIconType.privacy,
+            icon: AppAssets.privacy,
             onTap: () => Get.snackbar(
               'Privacy policy',
               'Privacy policy will be available soon.',
             ),
-          ),
+          ).paddingHorizontal(10.w),
           12.h.height,
           Divider(
             color: Colors.black.withValues(alpha: 0.2),
@@ -141,12 +115,13 @@ class SettingsView extends StatelessWidget {
           12.h.height,
           _SettingsOption(
             label: 'Terms and conditions',
-            iconType: SettingsIconType.terms,
+            icon: AppAssets.terms,
             onTap: () => Get.snackbar(
               'Terms and conditions',
               'Terms and conditions will be available soon.',
             ),
-          ),
+          ).paddingHorizontal(10.w),
+
           12.h.height,
           Divider(
             color: Colors.black.withValues(alpha: 0.2),
@@ -159,11 +134,11 @@ class SettingsView extends StatelessWidget {
               label: authController.isLoading.value
                   ? 'Logging out...'
                   : 'Logout',
-              iconType: SettingsIconType.logout,
+              icon: AppAssets.logout,
               onTap: authController.isLoading.value
                   ? null
                   : authController.logout,
-            ),
+            ).paddingHorizontal(10.w),
           ),
           12.h.height,
           Divider(
@@ -192,6 +167,7 @@ class SettingsView extends StatelessWidget {
                       style: AppTextStyles.customText18(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
+                        fontFamily: AppTextStyles.clashDisplay,
                       ),
                     ),
                   ),
@@ -207,14 +183,10 @@ class SettingsView extends StatelessWidget {
 }
 
 class _SettingsOption extends StatelessWidget {
-  const _SettingsOption({
-    required this.label,
-    required this.iconType,
-    this.onTap,
-  });
+  const _SettingsOption({required this.label, required this.icon, this.onTap});
 
   final String label;
-  final SettingsIconType iconType;
+  final String icon;
   final VoidCallback? onTap;
 
   @override
@@ -225,7 +197,7 @@ class _SettingsOption extends StatelessWidget {
         height: 52.h,
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         decoration: BoxDecoration(
-          color: const Color(0xFFF1F7F6),
+          color: Color.fromRGBO(240, 247, 246, 100),
           borderRadius: BorderRadius.circular(12.r),
         ),
         child: Row(
@@ -236,13 +208,17 @@ class _SettingsOption extends StatelessWidget {
                 style: AppTextStyles.customText20(
                   fontWeight: FontWeight.w600,
                   color: Colors.black.withValues(alpha: 0.5),
+                  fontFamily: AppTextStyles.clashDisplay,
                 ),
               ),
             ),
-            SettingsGlyph(
-              type: iconType,
-              size: 22.sp,
-              color: const Color(0xFF666666),
+            SvgPicture.asset(
+              icon,
+              height: 22.h,
+              colorFilter: const ColorFilter.mode(
+                Color(0xFF666666),
+                BlendMode.srcIn,
+              ),
             ),
           ],
         ),

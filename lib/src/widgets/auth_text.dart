@@ -36,6 +36,7 @@ abstract class AppTextStyles {
     FontWeight fontWeight = FontWeight.normal,
     double letterSpacing = 0,
     double? height,
+    String fontFamily = satoshi,
     TextDecoration decoration = TextDecoration.none,
     Color? decorationColor,
   }) {
@@ -47,6 +48,7 @@ abstract class AppTextStyles {
       decoration: decoration,
       decorationColor: decorationColor,
       height: height,
+      fontFamily: fontFamily,
     );
   }
 
@@ -55,6 +57,7 @@ abstract class AppTextStyles {
     FontWeight fontWeight = FontWeight.normal,
     double letterSpacing = 0,
     double? height,
+    String fontFamily = satoshi,
   }) {
     return customText(
       color: color,
@@ -62,6 +65,7 @@ abstract class AppTextStyles {
       fontWeight: fontWeight,
       letterSpacing: letterSpacing,
       height: height,
+      fontFamily: fontFamily,
     );
   }
 
@@ -70,6 +74,7 @@ abstract class AppTextStyles {
     double? height,
     FontWeight fontWeight = FontWeight.normal,
     double letterSpacing = 0,
+    String fontFamily = satoshi,
   }) {
     return customText(
       color: color,
@@ -77,6 +82,7 @@ abstract class AppTextStyles {
       fontWeight: fontWeight,
       letterSpacing: letterSpacing,
       height: height,
+      fontFamily: fontFamily,
     );
   }
 
@@ -85,6 +91,7 @@ abstract class AppTextStyles {
     FontWeight fontWeight = FontWeight.normal,
     double letterSpacing = 0,
     double? height,
+    String fontFamily = satoshi,
   }) {
     return customText(
       color: color,
@@ -92,6 +99,7 @@ abstract class AppTextStyles {
       fontWeight: fontWeight,
       letterSpacing: letterSpacing,
       height: height,
+      fontFamily: fontFamily,
     );
   }
 
@@ -100,6 +108,7 @@ abstract class AppTextStyles {
     Color? color,
     FontWeight fontWeight = FontWeight.normal,
     double letterSpacing = 0,
+    String fontFamily = satoshi,
   }) {
     return customText(
       color: color,
@@ -107,6 +116,7 @@ abstract class AppTextStyles {
       fontWeight: fontWeight,
       letterSpacing: letterSpacing,
       height: height,
+      fontFamily: fontFamily,
     );
   }
 
@@ -115,6 +125,7 @@ abstract class AppTextStyles {
     double? height,
     FontWeight fontWeight = FontWeight.normal,
     double letterSpacing = 0,
+    String fontFamily = satoshi,
   }) {
     return customText(
       color: color,
@@ -122,6 +133,7 @@ abstract class AppTextStyles {
       fontWeight: fontWeight,
       letterSpacing: letterSpacing,
       height: height,
+      fontFamily: fontFamily,
     );
   }
 
@@ -130,6 +142,7 @@ abstract class AppTextStyles {
     double? height,
     FontWeight fontWeight = FontWeight.normal,
     double letterSpacing = 0,
+    String fontFamily = satoshi,
   }) {
     return customText(
       color: color,
@@ -137,6 +150,7 @@ abstract class AppTextStyles {
       fontWeight: fontWeight,
       letterSpacing: letterSpacing,
       height: height,
+      fontFamily: fontFamily,
     );
   }
 
@@ -145,6 +159,7 @@ abstract class AppTextStyles {
     double? height,
     FontWeight fontWeight = FontWeight.normal,
     double letterSpacing = 0,
+    String fontFamily = satoshi,
   }) {
     return customText(
       color: color,
@@ -152,6 +167,7 @@ abstract class AppTextStyles {
       fontWeight: fontWeight,
       letterSpacing: letterSpacing,
       height: height,
+      fontFamily: fontFamily,
     );
   }
 
@@ -161,6 +177,7 @@ abstract class AppTextStyles {
     double letterSpacing = 0,
     TextDecoration decoration = TextDecoration.none,
     double? height,
+    String fontFamily = satoshi,
   }) {
     return customText(
       color: color,
@@ -169,6 +186,7 @@ abstract class AppTextStyles {
       letterSpacing: letterSpacing,
       decoration: decoration,
       height: height,
+      fontFamily: fontFamily,
     );
   }
 
@@ -178,6 +196,7 @@ abstract class AppTextStyles {
     double letterSpacing = 0,
     TextDecoration decoration = TextDecoration.none,
     double? height,
+    String fontFamily = satoshi,
   }) {
     return customText(
       color: color,
@@ -186,6 +205,7 @@ abstract class AppTextStyles {
       letterSpacing: letterSpacing,
       decoration: decoration,
       height: height,
+      fontFamily: fontFamily,
     );
   }
 }

@@ -39,6 +39,7 @@ dependencies:
   google_fonts: ^8.1.0
   flutter_screenutil: ^5.9.3
   pretty_qr_code: ^3.6.0
+  flutter_svg: ^2.3.0
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +65,7 @@ flutter:
     - assets/images/backgrounds/
     - assets/icons/
     - assets/icons/nav/
+    - assets/icons/settings/
     - assets/icons/social/
 
   fonts:

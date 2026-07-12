@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 class DashboardController extends GetxController {
-  final currentIndex = 0.obs;
+  final currentIndex = 1.obs;
   final isDarkMode = false.obs;
   final isSocialMediaExpanded = true.obs;
   final profileImageUrl = 'https://i.pravatar.cc/300'.obs;

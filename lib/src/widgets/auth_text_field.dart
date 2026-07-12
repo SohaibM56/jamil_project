@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:jamil_project/src/config/app_colors.dart';
+import 'package:jamil_project/src/widgets/auth_text.dart';
 
 class AuthTextField extends StatelessWidget {
   const AuthTextField({
@@ -25,19 +26,17 @@ class AuthTextField extends StatelessWidget {
         controller: controller,
         obscureText: obscureText,
         cursorColor: AppColors.primaryTeal,
-        style: TextStyle(
-          fontFamily: 'Satoshi',
+        style: AppTextStyles.customText18(
+          fontFamily: AppTextStyles.clashDisplay,
           color: Colors.black,
-          fontSize: 18.sp,
           height: 1,
           fontWeight: FontWeight.w400,
         ),
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: TextStyle(
-            fontFamily: 'Satoshi',
+          hintStyle: AppTextStyles.customText22(
             color: AppColors.inputHint,
-            fontSize: 22.sp,
+            fontFamily: AppTextStyles.clashDisplay,
             height: 1,
             fontWeight: FontWeight.w400,
             letterSpacing: -0.4,

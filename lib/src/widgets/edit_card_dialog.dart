@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jamil_project/src/config/sized_box_extension.dart';
 
 import 'package:jamil_project/src/config/app_colors.dart';
+import 'package:jamil_project/src/widgets/auth_text.dart';
 
 Future<void> showEditCardDialog({
   required BuildContext context,
@@ -144,18 +145,16 @@ class _EditCardField extends StatelessWidget {
         cursorColor: AppColors.primaryTeal,
         keyboardType: keyboardType,
         inputFormatters: inputFormatters,
-        style: TextStyle(
-          fontFamily: 'Satoshi',
-          fontSize: 31.sp,
+        style: AppTextStyles.customText30(
+          fontFamily: AppTextStyles.clashDisplay,
           height: 1,
           color: Colors.black,
           fontWeight: FontWeight.w300,
         ),
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: TextStyle(
-            fontFamily: 'Satoshi',
-            fontSize: 25.sp,
+          hintStyle: AppTextStyles.customText24(
+            fontFamily: AppTextStyles.clashDisplay,
             height: 1,
             color: Colors.black.withValues(alpha: 0.5),
             fontWeight: FontWeight.w300,
@@ -199,9 +198,8 @@ class _TextAction extends StatelessWidget {
           padding: EdgeInsets.only(bottom: 6.h),
           child: Text(
             label,
-            style: TextStyle(
-              fontFamily: 'Satoshi',
-              fontSize: 35.sp,
+            style: AppTextStyles.customText34(
+              fontFamily: AppTextStyles.clashDisplay,
               height: 1,
               color: color,
               fontWeight: FontWeight.w300,
