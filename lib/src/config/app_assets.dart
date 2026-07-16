@@ -28,8 +28,7 @@ class AppAssets {
   static const String telegram = '$iconPath/social/telegram.png';
   static const String tiktok = '$iconPath/social/tiktok.png';
   static const String whatsapp = '$iconPath/social/wa.png';
-  static const String whatsappBusiness =
-      '$iconPath/social/whatsapp-business-logo-png_seeklogo-614808.png';
+  static const String whatsappBusiness = '$iconPath/social/whatsapp-business-logo-png_seeklogo-614808.png';
   static const String x = '$iconPath/social/x.png';
   static const String youtube = '$iconPath/social/youtube.png';
 }

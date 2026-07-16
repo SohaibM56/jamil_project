@@ -1,70 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jamil_project/src/config/sized_box_extension.dart';
 
 import 'package:jamil_project/src/config/app_colors.dart';
 import 'package:jamil_project/src/widgets/auth_text.dart';
 
-Future<void> showEditCardDialog({
+Future<void> showEditTitleDialog({
   required BuildContext context,
-  String initialName = '',
-  String initialTitle = '',
-  String initialPhone = '',
-  required Future<void> Function({
-    required String name,
-    required String title,
-    required String phone,
-  })
-  onUpdate,
+  required String initialTitle,
+  required Future<void> Function(String title) onUpdate,
 }) async {
   await showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
     barrierColor: Colors.black.withValues(alpha: 0.55),
-    builder: (context) => _EditCardDialog(
-      initialName: initialName,
-      initialTitle: initialTitle,
-      initialPhone: initialPhone,
-      onUpdate: onUpdate,
-    ),
+    builder: (context) => _EditTitleDialog(initialTitle: initialTitle, onUpdate: onUpdate),
   );
 }
 
-class _EditCardDialog extends StatefulWidget {
-  const _EditCardDialog({
-    required this.initialName,
-    required this.initialTitle,
-    required this.initialPhone,
-    required this.onUpdate,
-  });
+class _EditTitleDialog extends StatefulWidget {
+  const _EditTitleDialog({required this.initialTitle, required this.onUpdate});
 
-  final String initialName;
   final String initialTitle;
-  final String initialPhone;
-  final Future<void> Function({
-    required String name,
-    required String title,
-    required String phone,
-  })
-  onUpdate;
+  final Future<void> Function(String title) onUpdate;
 
   @override
-  State<_EditCardDialog> createState() => _EditCardDialogState();
+  State<_EditTitleDialog> createState() => _EditTitleDialogState();
 }
 
-class _EditCardDialogState extends State<_EditCardDialog> {
-  late final nameController = TextEditingController(text: widget.initialName);
+class _EditTitleDialogState extends State<_EditTitleDialog> {
   late final titleController = TextEditingController(text: widget.initialTitle);
-  late final phoneController = TextEditingController(text: widget.initialPhone);
   bool _isSubmitting = false;
 
   @override
   void dispose() {
-    nameController.dispose();
     titleController.dispose();
-    phoneController.dispose();
     super.dispose();
   }
 
@@ -95,18 +66,7 @@ class _EditCardDialogState extends State<_EditCardDialog> {
                 ),
               ),
               60.h.height,
-              _EditCardField(controller: nameController, hintText: 'Name'),
-              35.h.height,
-              _EditCardField(controller: titleController, hintText: 'Title'),
-              35.h.height,
-              _EditCardField(
-                controller: phoneController,
-                hintText: 'Phone',
-                keyboardType: TextInputType.phone,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9+\-\s()]')),
-                ],
-              ),
+              _EditTitleField(controller: titleController),
               50.h.height,
               Row(
                 children: [
@@ -143,28 +103,16 @@ class _EditCardDialogState extends State<_EditCardDialog> {
 
   Future<void> _submit(BuildContext context) async {
     setState(() => _isSubmitting = true);
-    await widget.onUpdate(
-      name: nameController.text.trim(),
-      title: titleController.text.trim(),
-      phone: phoneController.text.trim(),
-    );
+    await widget.onUpdate(titleController.text.trim());
     if (!context.mounted) return;
     Navigator.of(context).pop();
   }
 }
 
-class _EditCardField extends StatelessWidget {
-  const _EditCardField({
-    required this.controller,
-    required this.hintText,
-    this.keyboardType,
-    this.inputFormatters,
-  });
+class _EditTitleField extends StatelessWidget {
+  const _EditTitleField({required this.controller});
 
   final TextEditingController controller;
-  final String hintText;
-  final TextInputType? keyboardType;
-  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -173,8 +121,6 @@ class _EditCardField extends StatelessWidget {
       child: TextField(
         controller: controller,
         cursorColor: AppColors.primaryTeal,
-        keyboardType: keyboardType,
-        inputFormatters: inputFormatters,
         style: AppTextStyles.customText30(
           fontFamily: AppTextStyles.clashDisplay,
           height: 1,
@@ -182,7 +128,7 @@ class _EditCardField extends StatelessWidget {
           fontWeight: FontWeight.w300,
         ),
         decoration: InputDecoration(
-          hintText: hintText,
+          hintText: 'Title',
           hintStyle: AppTextStyles.customText24(
             fontFamily: AppTextStyles.clashDisplay,
             height: 1,
@@ -190,7 +136,7 @@ class _EditCardField extends StatelessWidget {
             fontWeight: FontWeight.w300,
           ),
           filled: true,
-          fillColor: Color(0xFFF1F1F1).withValues(alpha: 0.5),
+          fillColor: const Color(0xFFF1F1F1).withValues(alpha: 0.5),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(13.r),
             borderSide: BorderSide.none,

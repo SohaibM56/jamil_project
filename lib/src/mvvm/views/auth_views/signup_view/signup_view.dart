@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jamil_project/src/config/padding_extensions.dart';
@@ -45,7 +46,8 @@ class SignupView extends GetView<SignupController> {
               // Signup Form Content
               SafeArea(
                 child: SingleChildScrollView(
-                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -104,13 +106,17 @@ class SignupView extends GetView<SignupController> {
                       _buildTextField(controller.nameController),
                       12.h.height,
                       _buildFieldLabel('Phone Number'),
-                      _buildTextField(controller.phoneController),
+                      _buildTextField(
+                        controller.phoneController,
+                        keyboardType: TextInputType.phone,
+                      ),
                       12.h.height,
                       _buildFieldLabel('Password'),
                       Obx(
                         () => _buildTextField(
                           controller.passwordController,
                           obscureText: controller.obscurePassword.value,
+                          textInputAction: TextInputAction.done,
                           suffixIcon: IconButton(
                             icon: Icon(
                               controller.obscurePassword.value
@@ -127,9 +133,12 @@ class SignupView extends GetView<SignupController> {
                       Center(
                         child: Obx(
                           () => GestureDetector(
-                            onTap: authController.isLoading.value
-                                ? null
-                                : controller.signup,
+                            onTap: () {
+                              FocusManager.instance.primaryFocus?.unfocus();
+                              authController.isLoading.value
+                                  ? null
+                                  : controller.signup();
+                            },
                             child: Column(
                               children: [
                                 if (authController.isLoading.value)
@@ -216,7 +225,7 @@ class SignupView extends GetView<SignupController> {
                                 fontSize: 16.sp,
                                 letterSpacing: -0.4,
                                 decoration: TextDecoration.underline,
-                                decorationColor : AppColors.primaryTeal,
+                                decorationColor: AppColors.primaryTeal,
                                 height: 1,
                                 fontFamily: AppTextStyles.clashDisplay,
                               ),
@@ -245,7 +254,7 @@ class SignupView extends GetView<SignupController> {
           color: Colors.black.withValues(alpha: 0.5),
           fontSize: 24.sp,
           height: 1,
-          fontWeight: FontWeight.w500
+          fontWeight: FontWeight.w500,
         ),
       ),
     );
@@ -255,6 +264,8 @@ class SignupView extends GetView<SignupController> {
     TextEditingController controller, {
     bool obscureText = false,
     Widget? suffixIcon,
+    TextInputType? keyboardType = TextInputType.text,
+    TextInputAction? textInputAction = TextInputAction.next,
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -265,6 +276,11 @@ class SignupView extends GetView<SignupController> {
         controller: controller,
         obscureText: obscureText,
         style: TextStyle(color: Colors.black87, fontSize: 20.sp),
+        textInputAction: textInputAction,
+        keyboardType: keyboardType,
+        inputFormatters: keyboardType == TextInputType.phone
+            ? [FilteringTextInputFormatter.digitsOnly]
+            : null,
         decoration: InputDecoration(
           isDense: true,
           contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),

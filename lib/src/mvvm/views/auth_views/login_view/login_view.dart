@@ -61,7 +61,7 @@ class LoginView extends GetView<LoginController> {
                   ),
                   Spacer(),
 
-                  Image.asset(AppAssets.loginHeaderImg, height: 70.h,),
+                  Image.asset(AppAssets.loginHeaderImg, height: 70.h),
 
                   16.h.height,
 
@@ -87,6 +87,7 @@ class LoginView extends GetView<LoginController> {
                       controller: controller.passwordController,
                       hintText: 'Password',
                       obscureText: controller.obscurePassword.value,
+                      textInputAction: TextInputAction.done,
                       suffixIcon: IconButton(
                         padding: EdgeInsets.zero,
                         constraints: BoxConstraints.tightFor(
@@ -138,7 +139,10 @@ class LoginView extends GetView<LoginController> {
                             ),
                           )
                         : GestureDetector(
-                            onTap: controller.login,
+                            onTap: () {
+                              FocusManager.instance.primaryFocus?.unfocus();
+                              controller.login();
+                            },
                             child: DecoratedBox(
                               decoration: BoxDecoration(
                                 border: Border(

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "864059181654",
+    "project_id": "grad-project-d5f84",
+    "storage_bucket": "grad-project-d5f84.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864059181654:android:8670440789e1695f6ec9f7",
+        "android_client_info": {
+          "package_name": "com.hcr.jamilcard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAORz6mdpJsEqsygndxV-Wx7ZvNTwAe_kE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

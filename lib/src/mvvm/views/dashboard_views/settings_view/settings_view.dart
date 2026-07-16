@@ -8,6 +8,9 @@ import 'package:jamil_project/src/config/padding_extensions.dart';
 import 'package:jamil_project/src/config/sized_box_extension.dart';
 import 'package:jamil_project/src/mvvm/viewModels/auth_controller/auth_controller.dart';
 import 'package:jamil_project/src/mvvm/viewModels/dashboard_controller/dashboard_controller.dart';
+import 'package:jamil_project/src/widgets/app_snackbar.dart';
+import 'package:jamil_project/src/widgets/dashboard_loading_state.dart';
+import 'package:jamil_project/src/widgets/edit_title_dialog.dart';
 
 import '../../../../widgets/auth_text.dart';
 
@@ -43,10 +46,21 @@ class SettingsView extends StatelessWidget {
               border: Border.all(color: Colors.black, width: 1.w),
               borderRadius: BorderRadius.circular(16.r),
             ),
-            child: Row(
-              children: [
-                Obx(
-                  () => Container(
+            child: Obx(() {
+              final card = dashboardController.card.value;
+
+              if (card == null) {
+                return DashboardLoadingState(
+                  hasError: dashboardController.hasLoadError.value,
+                  onRetry: dashboardController.retryLoadCard,
+                );
+              }
+
+              final imageUrl = card.profileImageUrl;
+
+              return Row(
+                children: [
+                  Container(
                     width: 48.w,
                     height: 48.w,
                     decoration: BoxDecoration(
@@ -56,52 +70,66 @@ class SettingsView extends StatelessWidget {
                         color: AppColors.primaryTealLight,
                         width: 1.w,
                       ),
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          dashboardController.profileImageUrl.value,
+                      image: imageUrl.isEmpty
+                          ? null
+                          : DecorationImage(
+                              image: NetworkImage(imageUrl),
+                              fit: BoxFit.cover,
+                            ),
+                    ),
+                    child: imageUrl.isEmpty
+                        ? Icon(
+                            Icons.person_outline,
+                            color: const Color(0xFFB0B0B0),
+                            size: 24.sp,
+                          )
+                        : null,
+                  ),
+                  16.w.width,
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          card.name,
+                          style: AppTextStyles.customText20(
+                            fontWeight: FontWeight.w800,
+                            color: Colors.black,
+                            fontFamily: AppTextStyles.clashDisplay,
+                          ),
                         ),
-                        fit: BoxFit.cover,
-                      ),
+                        Text(
+                          card.title,
+                          style: AppTextStyles.customText16(
+                            color: Colors.black,
+                            fontFamily: AppTextStyles.clashDisplay,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                16.w.width,
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Abdullah Jamil',
-                        style: AppTextStyles.customText20(
-                          fontWeight: FontWeight.w800,
-                          color: Colors.black,
-                          fontFamily: AppTextStyles.clashDisplay,
-                        ),
-                      ),
-                      Text(
-                        '--',
-                        style: AppTextStyles.customText16(
-                          color: Colors.black,
-                          fontFamily: AppTextStyles.clashDisplay,
-                        ),
-                      ),
-                    ],
+                  GestureDetector(
+                    onTap: () => showEditTitleDialog(
+                      context: context,
+                      initialTitle: card.title,
+                      onUpdate: dashboardController.updateTitle,
+                    ),
+                    child: Icon(
+                      Icons.edit_outlined,
+                      color: const Color(0xFFB0B0B0),
+                      size: 24.sp,
+                    ),
                   ),
-                ),
-                Icon(
-                  Icons.edit_outlined,
-                  color: const Color(0xFFB0B0B0),
-                  size: 24.sp,
-                ),
-              ],
-            ),
+                ],
+              );
+            }),
           ),
           24.h.height,
           _SettingsOption(
             label: 'Privacy policy',
             icon: AppAssets.privacy,
-            onTap: () => Get.snackbar(
+            onTap: () => AppSnackbar.info(
               'Privacy policy',
               'Privacy policy will be available soon.',
             ),
@@ -116,7 +144,7 @@ class SettingsView extends StatelessWidget {
           _SettingsOption(
             label: 'Terms and conditions',
             icon: AppAssets.terms,
-            onTap: () => Get.snackbar(
+            onTap: () => AppSnackbar.info(
               'Terms and conditions',
               'Terms and conditions will be available soon.',
             ),
@@ -147,38 +175,78 @@ class SettingsView extends StatelessWidget {
             thickness: 1.h,
           ).paddingHorizontal(50.w),
           12.h.height,
-          GestureDetector(
-            onTap: () => Get.snackbar(
-              'Delete account',
-              'Account deletion flow will be available soon.',
-            ),
-            child: Container(
-              height: 52.h,
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF84E55),
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Delete my account',
-                      style: AppTextStyles.customText18(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: AppTextStyles.clashDisplay,
+          Obx(
+            () => GestureDetector(
+              onTap: authController.isLoading.value
+                  ? null
+                  : () => _confirmDeleteAccount(context, authController),
+              child: Container(
+                height: 52.h,
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF84E55),
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        authController.isLoading.value
+                            ? 'Deleting...'
+                            : 'Delete my account',
+                        style: AppTextStyles.customText18(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: AppTextStyles.clashDisplay,
+                        ),
                       ),
                     ),
-                  ),
-                  Icon(Icons.cancel_outlined, color: Colors.white, size: 20.sp),
-                ],
+                    Icon(
+                      Icons.cancel_outlined,
+                      color: Colors.white,
+                      size: 20.sp,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ],
       ).paddingHorizontal(30.w),
     );
+  }
+}
+
+Future<void> _confirmDeleteAccount(
+  BuildContext context,
+  AuthController authController,
+) async {
+  final confirmed = await showDialog<bool>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Delete account?'),
+      content: const Text(
+        'This permanently deletes your account and your public card. '
+        'This action cannot be undone.',
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(true),
+          child: const Text(
+            'Delete',
+            style: TextStyle(color: Color(0xFFF84E55)),
+          ),
+        ),
+      ],
+    ),
+  );
+
+  if (confirmed == true) {
+    await authController.deleteAccount();
   }
 }
 

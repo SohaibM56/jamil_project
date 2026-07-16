@@ -6,12 +6,15 @@ import 'package:jamil_project/src/config/sized_box_extension.dart';
 import 'package:jamil_project/src/config/app_assets.dart';
 import 'package:jamil_project/src/config/app_colors.dart';
 import 'package:jamil_project/src/widgets/auth_text.dart';
+import 'package:jamil_project/src/mvvm/viewModels/auth_controller/auth_controller.dart';
 import 'package:jamil_project/src/mvvm/viewModels/forgot_controller/forgot_controller.dart';
 
 import '../../../../widgets/auth_text_field.dart';
 
 class ForgotView extends GetView<ForgotController> {
-  const ForgotView({super.key});
+  ForgotView({super.key});
+
+  final AuthController authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +76,8 @@ class ForgotView extends GetView<ForgotController> {
                   AuthTextField(
                     controller: controller.emailController,
                     hintText: 'Email',
+                    textInputType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.done,
                   ).paddingOnly(right: 25.w),
                   5.h.height,
                   Text(
@@ -84,28 +89,41 @@ class ForgotView extends GetView<ForgotController> {
                     ),
                   ),
                   62.h.height,
-                  GestureDetector(
-                    onTap: controller.resetPassword,
-                    behavior: HitTestBehavior.opaque,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Reset Password',
-                          style: AppTextStyles.customText38(
-                            color: AppColors.primaryTeal,
-                            letterSpacing: -0.5,
-                            height: 1,
+                  Obx(
+                    () => authController.isLoading.value
+                        ? SizedBox(
+                            width: 28.w,
+                            height: 28.w,
+                            child: const CircularProgressIndicator(
+                              color: AppColors.primaryTeal,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : GestureDetector(
+                            onTap: controller.resetPassword,
+                            behavior: HitTestBehavior.opaque,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Reset Password',
+                                  style: AppTextStyles.customText38(
+                                    color: AppColors.primaryTeal,
+                                    letterSpacing: -0.5,
+                                    height: 1,
+                                  ),
+                                ),
+                                4.h.height,
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primaryTeal,
+                                  ),
+                                  width: 80.w,
+                                  height: 1.h,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        4.h.height,
-                        Container(
-                          decoration: BoxDecoration(color: AppColors.primaryTeal),
-                          width: 80.w,
-                          height: 1.h,
-                        )
-                      ],
-                    ),
                   ),
                 ],
               ),

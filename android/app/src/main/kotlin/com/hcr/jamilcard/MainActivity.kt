@@ -1,4 +1,4 @@
-package com.example.jamil_project
+package com.hcr.jamilcard
 
 import io.flutter.embedding.android.FlutterActivity
 

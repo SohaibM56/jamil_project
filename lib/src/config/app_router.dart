@@ -7,6 +7,8 @@ import 'package:jamil_project/src/mvvm/viewModels/login_controller/login_control
 import 'package:jamil_project/src/mvvm/viewModels/signup_controller/signup_controller.dart';
 import 'package:jamil_project/src/mvvm/viewModels/dashboard_controller/dashboard_controller.dart';
 import 'package:jamil_project/src/mvvm/views/dashboard_view/dashboard_view.dart';
+import 'package:jamil_project/src/repos/card_repository.dart';
+import 'package:jamil_project/src/repos/storage_repository.dart';
 import 'package:jamil_project/src/mvvm/viewModels/splash_controller/splash_controller.dart';
 import 'package:jamil_project/src/mvvm/views/splash_view/splash_view.dart';
 
@@ -62,7 +64,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoute.forgot.path,
-      page: () => const ForgotView(),
+      page: () => ForgotView(),
       binding: BindingsBuilder(
         () => Get.lazyPut<ForgotController>(() => ForgotController()),
       ),
@@ -72,7 +74,12 @@ class AppPages {
       name: AppRoute.dashboard.path,
       page: () => const DashboardView(),
       binding: BindingsBuilder(
-        () => Get.lazyPut<DashboardController>(() => DashboardController()),
+        () => Get.lazyPut<DashboardController>(
+          () => DashboardController(
+            Get.find<CardRepository>(),
+            Get.find<StorageRepository>(),
+          ),
+        ),
       ),
       middlewares: [AuthMiddleware()],
     ),

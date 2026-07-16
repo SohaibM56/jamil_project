@@ -11,8 +11,12 @@ class AuthTextField extends StatelessWidget {
     required this.hintText,
     this.obscureText = false,
     this.suffixIcon,
+    this.textInputType = TextInputType.text,
+    this.textInputAction = TextInputAction.next,
   });
 
+  final TextInputType textInputType;
+  final TextInputAction textInputAction;
   final TextEditingController controller;
   final String hintText;
   final bool obscureText;
@@ -25,6 +29,8 @@ class AuthTextField extends StatelessWidget {
       child: TextField(
         controller: controller,
         obscureText: obscureText,
+        keyboardType: textInputType,
+        textInputAction: textInputAction,
         cursorColor: AppColors.primaryTeal,
         style: AppTextStyles.customText18(
           fontFamily: AppTextStyles.clashDisplay,

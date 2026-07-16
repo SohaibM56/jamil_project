@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Adds padding extensions for widgets in the LayerX app.
 extension PaddingExtension on Widget {
   Widget paddingHorizontal(double padding) {
     return Padding(

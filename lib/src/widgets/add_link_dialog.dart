@@ -1,40 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:jamil_project/src/config/sized_box_extension.dart';
 
 import 'package:jamil_project/src/config/app_colors.dart';
+import 'package:jamil_project/src/config/padding_extensions.dart';
+import 'package:jamil_project/src/utils/social_link_validator.dart';
 import 'package:jamil_project/src/widgets/auth_text.dart';
 import 'package:jamil_project/src/widgets/dashboard_icons.dart';
 
 Future<void> showAddLinkDialog({
   required BuildContext context,
   required SocialIconType iconType,
-  required ValueChanged<String> onAddLink,
+  String initialUrl = '',
+  required Future<void> Function(String url) onAddLink,
 }) async {
   await showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
     barrierColor: Colors.black.withValues(alpha: 0.55),
-    builder: (context) =>
-        _AddLinkDialog(iconType: iconType, onAddLink: onAddLink),
+    builder: (context) => _AddLinkDialog(
+      iconType: iconType,
+      initialUrl: initialUrl,
+      onAddLink: onAddLink,
+    ),
   );
 }
 
 class _AddLinkDialog extends StatefulWidget {
-  const _AddLinkDialog({required this.iconType, required this.onAddLink});
+  const _AddLinkDialog({
+    required this.iconType,
+    required this.initialUrl,
+    required this.onAddLink,
+  });
 
   final SocialIconType iconType;
-  final ValueChanged<String> onAddLink;
+  final String initialUrl;
+  final Future<void> Function(String url) onAddLink;
 
   @override
   State<_AddLinkDialog> createState() => _AddLinkDialogState();
 }
 
 class _AddLinkDialogState extends State<_AddLinkDialog> {
-  final urlController = TextEditingController();
+  late final urlController = TextEditingController(text: widget.initialUrl);
+  bool _isSubmitting = false;
+  String? _errorText;
+
+  bool get _isEditing => widget.initialUrl.isNotEmpty;
 
   @override
   void dispose() {
@@ -96,10 +110,10 @@ class _AddLinkDialogState extends State<_AddLinkDialog> {
                           height: 1,
                         ),
                         decoration: InputDecoration(
-                          hintText: 'URL',
+                          hintText: 'e.g. ${widget.iconType.exampleDomain}/you',
                           hintStyle: TextStyle(
                             fontFamily: 'Satoshi',
-                            fontSize: 26.sp,
+                            fontSize: 20.sp,
                             color: const Color(0xFF747474),
                             height: 1,
                           ),
@@ -120,6 +134,20 @@ class _AddLinkDialogState extends State<_AddLinkDialog> {
                   ),
                 ],
               ),
+              if (_errorText != null) ...[
+                8.h.height,
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    _errorText!,
+                    style: TextStyle(
+                      fontFamily: 'Satoshi',
+                      fontSize: 16.sp,
+                      color: const Color(0xFFFF5157),
+                    ),
+                  ),
+                ),
+              ],
               28.h.height,
               Container(
                 width: 190.w,
@@ -127,17 +155,29 @@ class _AddLinkDialogState extends State<_AddLinkDialog> {
                 color: const Color(0xFFD6D6D6),
               ),
               30.h.height,
-              _DialogButton(
-                label: 'Add link',
-                color: const Color(0xFFC8FFF7),
-                onTap: () => _submit(context),
-              ).paddingSymmetric(horizontal: 20.w),
+              _isSubmitting
+                  ? SizedBox(
+                      height: 40.h,
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.primaryTeal,
+                          strokeWidth: 2,
+                        ),
+                      ),
+                    )
+                  : _DialogButton(
+                      label: _isEditing ? 'Update link' : 'Add link',
+                      color: const Color(0xFFC8FFF7),
+                      onTap: () => _submit(context),
+                    ).paddingHorizontal(20.w),
               16.h.height,
               _DialogButton(
                 label: 'Cancel',
                 color: const Color(0xFFDCD8D8),
-                onTap: () => Navigator.of(context).pop(),
-              ).paddingSymmetric(horizontal: 20.w),
+                onTap: _isSubmitting
+                    ? () {}
+                    : () => Navigator.of(context).pop(),
+              ).paddingHorizontal(20.w),
             ],
           ),
         ),
@@ -145,8 +185,24 @@ class _AddLinkDialogState extends State<_AddLinkDialog> {
     );
   }
 
-  void _submit(BuildContext context) {
-    widget.onAddLink(urlController.text.trim());
+  Future<void> _submit(BuildContext context) async {
+    final url = urlController.text.trim();
+
+    if (!widget.iconType.isValidUrl(url)) {
+      setState(() {
+        _errorText = 'Enter a valid ${widget.iconType.exampleDomain} link.';
+      });
+      return;
+    }
+
+    setState(() {
+      _errorText = null;
+      _isSubmitting = true;
+    });
+
+    await widget.onAddLink(widget.iconType.normalizeUrl(url));
+
+    if (!context.mounted) return;
     Navigator.of(context).pop();
   }
 }

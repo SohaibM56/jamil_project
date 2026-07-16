@@ -6,6 +6,7 @@ import 'package:jamil_project/src/config/sized_box_extension.dart';
 import 'package:jamil_project/src/config/app_colors.dart';
 import 'package:jamil_project/src/mvvm/viewModels/dashboard_controller/dashboard_controller.dart';
 import 'package:jamil_project/src/widgets/dashboard_icons.dart';
+import 'package:jamil_project/src/widgets/dashboard_loading_state.dart';
 import 'package:jamil_project/src/widgets/add_link_dialog.dart';
 
 import '../../../../config/padding_extensions.dart';
@@ -14,7 +15,8 @@ import '../../../../widgets/auth_text.dart';
 class LinksView extends StatelessWidget {
   const LinksView({super.key});
 
-  static const List<({String label, SocialIconType iconType})> _socialMediaLinks = [
+  static const List<({String label, SocialIconType iconType})>
+  _socialMediaLinks = [
     (label: 'Whatsapp', iconType: SocialIconType.whatsapp),
     (label: 'Instagram', iconType: SocialIconType.instagram),
     (label: 'TikTok', iconType: SocialIconType.tiktok),
@@ -34,121 +36,147 @@ class LinksView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-        60.h.height,
-        Text(
-          "Smart Links",
-          style: AppTextStyles.customText34(
-            fontWeight: FontWeight.w800,
-            color: Colors.black,
-            fontFamily: AppTextStyles.clashDisplay
+          60.h.height,
+          Text(
+            "Smart Links",
+            style: AppTextStyles.customText34(
+              fontWeight: FontWeight.w800,
+              color: Colors.black,
+              fontFamily: AppTextStyles.clashDisplay,
+            ),
           ),
-        ),
-        2.h.height,
-        Text(
-          "Add, manage and remove links",
-          style: AppTextStyles.customText24(
-            fontWeight: FontWeight.w400,
-            color: Colors.black,
-              fontFamily: AppTextStyles.clashDisplay
+          2.h.height,
+          Text(
+            "Add, manage and remove links",
+            style: AppTextStyles.customText24(
+              fontWeight: FontWeight.w400,
+              color: Colors.black,
+              fontFamily: AppTextStyles.clashDisplay,
+            ),
           ),
-        ),
-        50.h.height,
-        GestureDetector(
-          onTap: dashboardController.toggleSocialMediaExpanded,
-          child: Material(
-            elevation: 1.sp,
-            borderRadius: BorderRadius.circular(10.r),
-            child: Container(
-              width: double.infinity,
-              height: 50.h,
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(238, 245, 244,100),
-                borderRadius: BorderRadius.circular(10.r),
-                border: Border.all(color: const Color(0xFFE0E0E0), width: 1.w),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
-                    blurRadius: 10.r,
-                    offset: Offset(0, 4.h),
+          50.h.height,
+          GestureDetector(
+            onTap: dashboardController.toggleSocialMediaExpanded,
+            child: Material(
+              elevation: 1.sp,
+              borderRadius: BorderRadius.circular(10.r),
+              child: Container(
+                width: double.infinity,
+                height: 50.h,
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(238, 245, 244, 100),
+                  borderRadius: BorderRadius.circular(10.r),
+                  border: Border.all(
+                    color: const Color(0xFFE0E0E0),
+                    width: 1.w,
                   ),
-                ],
-              ),
-              child: Obx(
-                () => Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Text(
-                      'Social media',
-                      style: AppTextStyles.customText20(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                          fontFamily: AppTextStyles.clashDisplay
-                      )
-                    ),
-                    Positioned(
-                      right: 18.w,
-                      child: AnimatedRotation(
-                        turns: dashboardController.isSocialMediaExpanded.value
-                            ? 0
-                            : 0.5,
-                        duration: const Duration(milliseconds: 180),
-                        child: Icon(
-                          Icons.keyboard_arrow_up_rounded,
-                          color: AppColors.primaryTeal,
-                          size: 20.sp,
-                        ),
-                      ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.05),
+                      blurRadius: 10.r,
+                      offset: Offset(0, 4.h),
                     ),
                   ],
+                ),
+                child: Obx(
+                  () => Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Text(
+                        'Social media',
+                        style: AppTextStyles.customText20(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                          fontFamily: AppTextStyles.clashDisplay,
+                        ),
+                      ),
+                      Positioned(
+                        right: 18.w,
+                        child: AnimatedRotation(
+                          turns: dashboardController.isSocialMediaExpanded.value
+                              ? 0
+                              : 0.5,
+                          duration: const Duration(milliseconds: 180),
+                          child: Icon(
+                            Icons.keyboard_arrow_up_rounded,
+                            color: AppColors.primaryTeal,
+                            size: 20.sp,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-        20.h.height,
-        Obx(
-          () => Expanded(
-            child: AnimatedSize(
-              duration: const Duration(milliseconds: 180),
-              curve: Curves.easeOut,
-              child: dashboardController.isSocialMediaExpanded.value
-                  ? ListView.builder(
-                      physics: const ClampingScrollPhysics(),
-                      itemCount: _socialMediaLinks.length,
-                      itemBuilder: (context, index) {
-                        final link = _socialMediaLinks[index];
-                        return _SocialLinkRow(
-                          label: link.label,
-                          iconType: link.iconType,
-                          isAdded: dashboardController.socialLinks[link.label] ?? false,
-                          onTap: () => _handleSocialLinkTap(
-                            context,
-                            dashboardController,
-                            label: link.label,
-                            iconType: link.iconType,
-                          ),
-                        );
-                      },
-                    )
-                  : const SizedBox.shrink(),
-            ),
-          ),
-        ),
-      ],
-            ).paddingHorizontal(30.w),
+          20.h.height,
+          Obx(() {
+            if (dashboardController.card.value == null) {
+              return Expanded(
+                child: DashboardLoadingState(
+                  hasError: dashboardController.hasLoadError.value,
+                  onRetry: dashboardController.retryLoadCard,
+                ),
+              );
+            }
+
+            return Expanded(
+              child: AnimatedSize(
+                duration: const Duration(milliseconds: 180),
+                curve: Curves.easeOut,
+                child: dashboardController.isSocialMediaExpanded.value
+                    ? ListView.builder(
+                        physics: const ClampingScrollPhysics(),
+                        itemCount: _socialMediaLinks.length,
+                        itemBuilder: (context, index) {
+                          final link = _socialMediaLinks[index];
+                          return Obx(() {
+                            final isAdded = dashboardController.card.value?.links[link.iconType.name] != null;
+                            final isPending = dashboardController.pendingLinkPlatforms.contains(link.iconType.name);
+                            return _SocialLinkRow(
+                              label: link.label,
+                              iconType: link.iconType,
+                              isAdded: isAdded,
+                              isLoading: isPending,
+                              onTap: isPending
+                                  ? null
+                                  : () => _handleSocialLinkTap(
+                                      context,
+                                      dashboardController,
+                                      label: link.label,
+                                      iconType: link.iconType,
+                                      isAdded: isAdded,
+                                    ),
+                            );
+                          });
+                        },
+                      )
+                    : const SizedBox.shrink(),
+              ),
+            );
+          }),
+        ],
+      ).paddingHorizontal(30.w),
     );
   }
 
-  void _handleSocialLinkTap(BuildContext context, DashboardController dashboardController, {required String label, required SocialIconType iconType,}) {
-    if (dashboardController.socialLinks[label] ?? false) {
-      dashboardController.removeSocialLink(label);
+  void _handleSocialLinkTap(
+    BuildContext context,
+    DashboardController dashboardController, {
+    required String label,
+    required SocialIconType iconType,
+    required bool isAdded,
+  }) {
+    if (isAdded) {
+      dashboardController.removeLink(iconType.name);
       return;
     }
 
     showAddLinkDialog(
       context: context,
       iconType: iconType,
-      onAddLink: (url) => dashboardController.addSocialLink(label, url),
+      onAddLink: (url) => dashboardController.upsertLink(iconType.name, url),
     );
   }
 }
@@ -158,13 +186,15 @@ class _SocialLinkRow extends StatelessWidget {
     required this.label,
     required this.iconType,
     required this.isAdded,
+    required this.isLoading,
     required this.onTap,
   });
 
   final String label;
   final SocialIconType iconType;
   final bool isAdded;
-  final VoidCallback onTap;
+  final bool isLoading;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +203,7 @@ class _SocialLinkRow extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       height: 48.h,
       decoration: BoxDecoration(
-        color: Color.fromRGBO(238, 245, 244,100),
+        color: Color.fromRGBO(238, 245, 244, 100),
         borderRadius: BorderRadius.circular(8.r),
         border: Border.all(color: const Color(0xFFE0E0E0), width: 1.w),
         boxShadow: [
@@ -204,18 +234,23 @@ class _SocialLinkRow extends StatelessWidget {
               width: 18.w,
               height: 18.w,
               decoration: BoxDecoration(
-                color:Color.fromRGBO(203, 247, 240,100),
+                color: Color.fromRGBO(203, 247, 240, 100),
                 shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.black,
-                  width: 1.w,
-                ),
+                border: Border.all(color: Colors.black, width: 1.w),
               ),
-              child: Icon(
-                isAdded ? Icons.check_rounded : Icons.add_rounded,
-                size: 14.sp,
-                color: Colors.black,
-              ),
+              child: isLoading
+                  ? Padding(
+                      padding: EdgeInsets.all(3.w),
+                      child: const CircularProgressIndicator(
+                        strokeWidth: 1.5,
+                        color: Colors.black,
+                      ),
+                    )
+                  : Icon(
+                      isAdded ? Icons.check_rounded : Icons.add_rounded,
+                      size: 14.sp,
+                      color: Colors.black,
+                    ),
             ),
           ),
         ],
