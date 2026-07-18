@@ -38,18 +38,6 @@ This project follows an **MVVM architecture** using **GetX** for state managemen
 - **SVG Icons:** flutter_svg
 - **Image Cropping:** image_cropper (customizable square crop for avatars)
 
-## 🧠 Architecture & Workflows
-
-### Secure Account Deletion
-Implemented a high-security deletion flow that ensures data integrity:
-1. **User Confirmation:** Initial warning dialog to prevent accidental triggers.
-2. **Re-authentication:** Always requires the user's password immediately before deletion (using `EmailAuthProvider.credential`).
-3. **Atomic Deletion:** Performs a Firestore `WriteBatch` to delete the `user` document and associated `card` document only *after* successful re-authentication, followed by `user.delete()` in Firebase Auth.
-
-### Responsive UI Design
-- **Keyboard Handling:** All input-heavy views and modal bottom sheets (Edit Title, Add Link, Re-authenticate) are wrapped in `SingleChildScrollView` to prevent layout overflows when the keyboard appears.
-- **Screen Scaling:** Uses `flutter_screenutil` for consistent sizing across different device dimensions.
-
 ## ⚙️ Project Configuration
 
 - **Security Rules:** `firestore.rules` and `storage.rules` are maintained in the root directory for version control and single-source-of-truth.
@@ -62,8 +50,3 @@ Implemented a high-security deletion flow that ensures data integrity:
 - **Persistent Auth:** Firebase Auth persists the signed-in session across restarts; `SplashController` checks `FirebaseAuth.instance.currentUser` (via `AuthController.isAuthenticated`) to route to Dashboard or Login.
 - **Loading/Error Handling:** Auth actions use `.obs` loading/error state on `AuthController`, surfaced via `Obx` and `Get.snackbar`.
 - **Separation of Concerns:** Views only interact with their controller; controllers talk to repositories, not data sources directly.
-
-## ⚠️ Current Limitations
-
-- The public card page (Firebase Hosting React SPA) is a separate codebase,
-  not in this repo, and not built yet.
