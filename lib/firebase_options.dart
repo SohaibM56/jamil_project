@@ -44,7 +44,6 @@ class DefaultFirebaseOptions {
     projectId: 'grad-project-d5f84',
     storageBucket: 'grad-project-d5f84.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAJTSgyhliwtowk9-aOGZtxbEqmejq1J6Y',
     appId: '1:864059181654:ios:4b129da577d9464b6ec9f7',
@@ -53,5 +52,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'grad-project-d5f84.firebasestorage.app',
     iosBundleId: 'com.hcr.jamilcard',
   );
-
 }

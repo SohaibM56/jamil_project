@@ -78,22 +78,21 @@ class _QRViewState extends State<QRView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          60.h.height,
+          40.h.height,
           Text(
             "Personal QR",
-            style: AppTextStyles.customText34(
+            style: AppTextStyles.customText28(
               fontWeight: FontWeight.w800,
               color: Colors.black,
               fontFamily: AppTextStyles.clashDisplay,
             ),
           ),
-          2.h.height,
+          4.h.height,
           Text(
             "Share your smart business card",
-            style: AppTextStyles.customText(
+            style: AppTextStyles.customText18(
               fontWeight: FontWeight.w500,
-              fontSize: 25.sp,
-              color: Colors.black,
+              color: Colors.black.withValues(alpha: 0.7),
               fontFamily: AppTextStyles.clashDisplay,
             ),
           ),

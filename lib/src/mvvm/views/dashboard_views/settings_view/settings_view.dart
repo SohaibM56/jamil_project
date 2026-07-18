@@ -27,10 +27,10 @@ class SettingsView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            50.h.height,
+            40.h.height,
             Text(
               "Settings",
-              style: AppTextStyles.customText34(
+              style: AppTextStyles.customText28(
                 fontWeight: FontWeight.w800,
                 color: Colors.black,
                 fontFamily: AppTextStyles.clashDisplay,
@@ -94,19 +94,25 @@ class SettingsView extends StatelessWidget {
                       children: [
                         Text(
                           card.name,
-                          style: AppTextStyles.customText20(
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.customText18(
                             fontWeight: FontWeight.w800,
                             color: Colors.black,
                             fontFamily: AppTextStyles.clashDisplay,
                           ),
                         ),
-                        Text(
-                          card.title,
-                          style: AppTextStyles.customText16(
-                            color: Colors.black,
-                            fontFamily: AppTextStyles.clashDisplay,
+                        if (card.title.trim().isNotEmpty)
+                          Text(
+                            card.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTextStyles.customText(
+                              fontSize: 14,
+                              color: Colors.black.withValues(alpha: 0.7),
+                              fontFamily: AppTextStyles.clashDisplay,
+                            ),
                           ),
-                        ),
                       ],
                     ),
                   ),
@@ -242,7 +248,9 @@ class _SettingsOption extends StatelessWidget {
             Expanded(
               child: Text(
                 label,
-                style: AppTextStyles.customText20(
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyles.customText18(
                   fontWeight: FontWeight.w600,
                   color: Colors.black.withValues(alpha: 0.5),
                   fontFamily: AppTextStyles.clashDisplay,

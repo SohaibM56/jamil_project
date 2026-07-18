@@ -36,25 +36,25 @@ class LinksView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          60.h.height,
+          40.h.height,
           Text(
             "Smart Links",
-            style: AppTextStyles.customText34(
+            style: AppTextStyles.customText28(
               fontWeight: FontWeight.w800,
               color: Colors.black,
               fontFamily: AppTextStyles.clashDisplay,
             ),
           ),
-          2.h.height,
+          4.h.height,
           Text(
             "Add, manage and remove links",
-            style: AppTextStyles.customText24(
-              fontWeight: FontWeight.w400,
-              color: Colors.black,
+            style: AppTextStyles.customText18(
+              fontWeight: FontWeight.w500,
+              color: Colors.black.withValues(alpha: 0.7),
               fontFamily: AppTextStyles.clashDisplay,
             ),
           ),
-          50.h.height,
+          40.h.height,
           GestureDetector(
             onTap: dashboardController.toggleSocialMediaExpanded,
             child: Material(
