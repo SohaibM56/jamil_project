@@ -1,6 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+class RequiresRecentLoginException implements Exception {
+  const RequiresRecentLoginException();
+  @override
+  String toString() => 'Please log out and log back in, then try again.';
+}
+
 class AuthRepository {
   AuthRepository(this._auth, this._firestore);
 
@@ -47,14 +53,39 @@ class AuthRepository {
 
   Future<void> logout() => _auth.signOut();
 
-  Future<void> deleteAccount() async {
+  Future<void> reauthenticate(String password) async {
+    final user = _auth.currentUser;
+    if (user == null || user.email == null) {
+      throw Exception('No user found to re-authenticate.');
+    }
+
+    try {
+      final credential = EmailAuthProvider.credential(
+        email: user.email!,
+        password: password,
+      );
+      await user.reauthenticateWithCredential(credential);
+    } on FirebaseAuthException catch (error) {
+      if (error.code == 'requires-recent-login') {
+        throw const RequiresRecentLoginException();
+      }
+      throw Exception(_messageFor(error));
+    }
+  }
+
+  Future<void> deleteAccount(String password) async {
     final user = _auth.currentUser;
     if (user == null) return;
 
+    // 1. Re-authenticate first to ensure session is valid
+    await reauthenticate(password);
+
     try {
+      // 2. Fetch data needed for deletion
       final userDoc = await _firestore.collection('users').doc(user.uid).get();
       final cardId = userDoc.data()?['cardId'] as String?;
 
+      // 3. Perform Firestore deletions
       final batch = _firestore.batch();
       batch.delete(_firestore.collection('users').doc(user.uid));
       if (cardId != null) {
@@ -62,8 +93,12 @@ class AuthRepository {
       }
       await batch.commit();
 
+      // 4. Finally delete the Auth user
       await user.delete();
     } on FirebaseAuthException catch (error) {
+      if (error.code == 'requires-recent-login') {
+        throw const RequiresRecentLoginException();
+      }
       throw Exception(_messageFor(error));
     }
   }

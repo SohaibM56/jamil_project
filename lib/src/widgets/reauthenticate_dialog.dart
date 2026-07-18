@@ -1,41 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jamil_project/src/config/sized_box_extension.dart';
-
 import 'package:jamil_project/src/config/app_colors.dart';
 import 'package:jamil_project/src/widgets/auth_text.dart';
 
-Future<void> showEditTitleDialog({
+Future<String?> showReauthenticateDialog({
   required BuildContext context,
-  required String initialTitle,
-  required Future<void> Function(String title) onUpdate,
 }) async {
-  await showModalBottomSheet<void>(
+  return showModalBottomSheet<String>(
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
     barrierColor: Colors.black.withValues(alpha: 0.55),
-    builder: (context) => _EditTitleDialog(initialTitle: initialTitle, onUpdate: onUpdate),
+    builder: (context) => const _ReauthenticateDialog(),
   );
 }
 
-class _EditTitleDialog extends StatefulWidget {
-  const _EditTitleDialog({required this.initialTitle, required this.onUpdate});
-
-  final String initialTitle;
-  final Future<void> Function(String title) onUpdate;
+class _ReauthenticateDialog extends StatefulWidget {
+  const _ReauthenticateDialog();
 
   @override
-  State<_EditTitleDialog> createState() => _EditTitleDialogState();
+  State<_ReauthenticateDialog> createState() => _ReauthenticateDialogState();
 }
 
-class _EditTitleDialogState extends State<_EditTitleDialog> {
-  late final titleController = TextEditingController(text: widget.initialTitle);
-  bool _isSubmitting = false;
+class _ReauthenticateDialogState extends State<_ReauthenticateDialog> {
+  final passwordController = TextEditingController();
+  bool _obscurePassword = true;
 
   @override
   void dispose() {
-    titleController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 
@@ -47,7 +41,7 @@ class _EditTitleDialogState extends State<_EditTitleDialog> {
       padding: EdgeInsets.only(bottom: bottomInset),
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.fromLTRB(60.w, 10.h, 60.w, 28.h),
+        padding: EdgeInsets.fromLTRB(40.w, 10.h, 40.w, 28.h),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(34.r)),
@@ -66,32 +60,49 @@ class _EditTitleDialogState extends State<_EditTitleDialog> {
                     borderRadius: BorderRadius.circular(99.r),
                   ),
                 ),
-                60.h.height,
-                _EditTitleField(controller: titleController),
-                50.h.height,
+                40.h.height,
+                Text(
+                  'Enter Password',
+                  style: AppTextStyles.customText24(
+                    fontFamily: AppTextStyles.clashDisplay,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
+                ),
+                10.h.height,
+                Text(
+                  'Please enter your password to confirm account deletion.',
+                  textAlign: TextAlign.center,
+                  style: AppTextStyles.customText16(
+                    color: Colors.black.withValues(alpha: 0.6),
+                  ),
+                ),
+                40.h.height,
+                _PasswordField(
+                  controller: passwordController,
+                  obscureText: _obscurePassword,
+                  onToggleVisibility: () {
+                    setState(() => _obscurePassword = !_obscurePassword);
+                  },
+                ),
+                40.h.height,
                 Row(
                   children: [
-                    _isSubmitting
-                        ? SizedBox(
-                            width: 24.w,
-                            height: 24.w,
-                            child: const CircularProgressIndicator(
-                              color: AppColors.primaryTeal,
-                              strokeWidth: 2,
-                            ),
-                          )
-                        : _TextAction(
-                            label: 'Update',
-                            color: AppColors.primaryTeal,
-                            onTap: () => _submit(context),
-                          ),
+                    _TextAction(
+                      label: 'Confirm',
+                      color: AppColors.error,
+                      onTap: () {
+                        final password = passwordController.text.trim();
+                        if (password.isNotEmpty) {
+                          Navigator.of(context).pop(password);
+                        }
+                      },
+                    ),
                     const Spacer(),
                     _TextAction(
                       label: 'Cancel',
-                      color: const Color(0xFFFF5157),
-                      onTap: _isSubmitting
-                          ? () {}
-                          : () => Navigator.of(context).pop(),
+                      color: const Color(0xFF707070),
+                      onTap: () => Navigator.of(context).pop(),
                     ),
                   ],
                 ),
@@ -102,40 +113,36 @@ class _EditTitleDialogState extends State<_EditTitleDialog> {
       ),
     );
   }
-
-  Future<void> _submit(BuildContext context) async {
-    setState(() => _isSubmitting = true);
-    await widget.onUpdate(titleController.text.trim());
-    if (!context.mounted) return;
-    Navigator.of(context).pop();
-  }
 }
 
-class _EditTitleField extends StatelessWidget {
-  const _EditTitleField({required this.controller});
+class _PasswordField extends StatelessWidget {
+  const _PasswordField({
+    required this.controller,
+    required this.obscureText,
+    required this.onToggleVisibility,
+  });
 
   final TextEditingController controller;
+  final bool obscureText;
+  final VoidCallback onToggleVisibility;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40.h,
+      height: 48.h,
       child: TextField(
         controller: controller,
+        obscureText: obscureText,
         cursorColor: AppColors.primaryTeal,
-        style: AppTextStyles.customText30(
+        style: AppTextStyles.customText18(
           fontFamily: AppTextStyles.clashDisplay,
-          height: 1,
           color: Colors.black,
-          fontWeight: FontWeight.w300,
         ),
         decoration: InputDecoration(
-          hintText: 'Title',
-          hintStyle: AppTextStyles.customText24(
+          hintText: 'Password',
+          hintStyle: AppTextStyles.customText18(
             fontFamily: AppTextStyles.clashDisplay,
-            height: 1,
-            color: Colors.black.withValues(alpha: 0.5),
-            fontWeight: FontWeight.w300,
+            color: Colors.black.withValues(alpha: 0.3),
           ),
           filled: true,
           fillColor: const Color(0xFFF1F1F1).withValues(alpha: 0.5),
@@ -143,7 +150,15 @@ class _EditTitleField extends StatelessWidget {
             borderRadius: BorderRadius.circular(13.r),
             borderSide: BorderSide.none,
           ),
-          contentPadding: EdgeInsets.fromLTRB(18.w, 13.h, 18.w, 13.h),
+          contentPadding: EdgeInsets.symmetric(horizontal: 18.w),
+          suffixIcon: IconButton(
+            icon: Icon(
+              obscureText ? Icons.visibility_off : Icons.visibility,
+              color: const Color(0xFF707070),
+              size: 20.sp,
+            ),
+            onPressed: onToggleVisibility,
+          ),
         ),
       ),
     );
@@ -176,12 +191,11 @@ class _TextAction extends StatelessWidget {
           padding: EdgeInsets.only(bottom: 6.h),
           child: Text(
             label,
-            style: AppTextStyles.customText34(
+            style: AppTextStyles.customText24(
               fontFamily: AppTextStyles.clashDisplay,
               height: 1,
               color: color,
-              fontWeight: FontWeight.w300,
-              letterSpacing: -1.2,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),

@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:jamil_project/src/repos/auth_repository.dart';
 import 'package:jamil_project/src/config/app_router.dart';
 import 'package:jamil_project/src/widgets/app_snackbar.dart';
+import 'package:jamil_project/src/widgets/reauthenticate_dialog.dart';
+import 'package:flutter/material.dart';
 
 class AuthController extends GetxController {
   AuthController(this._authRepository);
@@ -55,8 +57,14 @@ class AuthController extends GetxController {
   }
 
   Future<void> deleteAccount() async {
+    final context = Get.context;
+    if (context == null) return;
+
+    final password = await showReauthenticateDialog(context: context);
+    if (password == null) return;
+
     await _runAuthAction(() async {
-      await _authRepository.deleteAccount();
+      await _authRepository.deleteAccount(password);
       isAuthenticated.value = false;
       Get.offAllNamed(AppRoute.login.path);
       AppSnackbar.success('Account deleted', 'Your account has been deleted.');

@@ -1,0 +1,4 @@
+- [x] Update `AuthRepository.deleteAccount` to require password and re-authenticate first
+- [x] Update `AuthController.deleteAccount` to always prompt for password
+- [x] Remove redundant flow control logic
+- [x] Verify the fix

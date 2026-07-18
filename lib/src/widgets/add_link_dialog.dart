@@ -71,114 +71,116 @@ class _AddLinkDialogState extends State<_AddLinkDialog> {
         ),
         child: SafeArea(
           top: false,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 56.w,
-                height: 5.h,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF737373),
-                  borderRadius: BorderRadius.circular(99.r),
-                ),
-              ),
-              50.h.height,
-              Row(
-                children: [
-                  SocialIcon(type: widget.iconType, size: 40.w),
-                  16.w.width,
-                  Container(
-                    width: 2.w,
-                    height: 20.h,
-                    color: const Color(0xFFD8D8D8),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 56.w,
+                  height: 5.h,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF737373),
+                    borderRadius: BorderRadius.circular(99.r),
                   ),
-                  16.w.width,
-                  Expanded(
-                    child: SizedBox(
-                      height: 40.h,
-                      child: TextField(
-                        controller: urlController,
-                        cursorColor: AppColors.primaryTeal,
-                        keyboardType: TextInputType.url,
-                        textInputAction: TextInputAction.done,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                        ],
-                        style: AppTextStyles.customText26(
-                          fontFamily: AppTextStyles.clashDisplay,
-                          color: Colors.black,
-                          height: 1,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: 'e.g. ${widget.iconType.exampleDomain}/you',
-                          hintStyle: TextStyle(
-                            fontFamily: 'Satoshi',
-                            fontSize: 20.sp,
-                            color: const Color(0xFF747474),
+                ),
+                50.h.height,
+                Row(
+                  children: [
+                    SocialIcon(type: widget.iconType, size: 40.w),
+                    16.w.width,
+                    Container(
+                      width: 2.w,
+                      height: 20.h,
+                      color: const Color(0xFFD8D8D8),
+                    ),
+                    16.w.width,
+                    Expanded(
+                      child: SizedBox(
+                        height: 40.h,
+                        child: TextField(
+                          controller: urlController,
+                          cursorColor: AppColors.primaryTeal,
+                          keyboardType: TextInputType.url,
+                          textInputAction: TextInputAction.done,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                          ],
+                          style: AppTextStyles.customText26(
+                            fontFamily: AppTextStyles.clashDisplay,
+                            color: Colors.black,
                             height: 1,
                           ),
-                          filled: true,
-                          fillColor: const Color(0xFFF0F0F0),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(11.r),
-                            borderSide: BorderSide.none,
+                          decoration: InputDecoration(
+                            hintText: 'e.g. ${widget.iconType.exampleDomain}/you',
+                            hintStyle: TextStyle(
+                              fontFamily: 'Satoshi',
+                              fontSize: 20.sp,
+                              color: const Color(0xFF747474),
+                              height: 1,
+                            ),
+                            filled: true,
+                            fillColor: const Color(0xFFF0F0F0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(11.r),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 20.w,
+                              vertical: 5.h,
+                            ),
                           ),
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 20.w,
-                            vertical: 5.h,
-                          ),
+                          onSubmitted: (_) => _submit(context),
                         ),
-                        onSubmitted: (_) => _submit(context),
+                      ),
+                    ),
+                  ],
+                ),
+                if (_errorText != null) ...[
+                  8.h.height,
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      _errorText!,
+                      style: TextStyle(
+                        fontFamily: 'Satoshi',
+                        fontSize: 16.sp,
+                        color: const Color(0xFFFF5157),
                       ),
                     ),
                   ),
                 ],
-              ),
-              if (_errorText != null) ...[
-                8.h.height,
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    _errorText!,
-                    style: TextStyle(
-                      fontFamily: 'Satoshi',
-                      fontSize: 16.sp,
-                      color: const Color(0xFFFF5157),
-                    ),
-                  ),
+                28.h.height,
+                Container(
+                  width: 190.w,
+                  height: 2.h,
+                  color: const Color(0xFFD6D6D6),
                 ),
-              ],
-              28.h.height,
-              Container(
-                width: 190.w,
-                height: 2.h,
-                color: const Color(0xFFD6D6D6),
-              ),
-              30.h.height,
-              _isSubmitting
-                  ? SizedBox(
-                      height: 40.h,
-                      child: const Center(
-                        child: CircularProgressIndicator(
-                          color: AppColors.primaryTeal,
-                          strokeWidth: 2,
+                30.h.height,
+                _isSubmitting
+                    ? SizedBox(
+                        height: 40.h,
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.primaryTeal,
+                            strokeWidth: 2,
+                          ),
                         ),
-                      ),
-                    )
-                  : _DialogButton(
-                      label: _isEditing ? 'Update link' : 'Add link',
-                      color: const Color(0xFFC8FFF7),
-                      onTap: () => _submit(context),
-                    ).paddingHorizontal(20.w),
-              16.h.height,
-              _DialogButton(
-                label: 'Cancel',
-                color: const Color(0xFFDCD8D8),
-                onTap: _isSubmitting
-                    ? () {}
-                    : () => Navigator.of(context).pop(),
-              ).paddingHorizontal(20.w),
-            ],
+                      )
+                    : _DialogButton(
+                        label: _isEditing ? 'Update link' : 'Add link',
+                        color: const Color(0xFFC8FFF7),
+                        onTap: () => _submit(context),
+                      ).paddingHorizontal(20.w),
+                16.h.height,
+                _DialogButton(
+                  label: 'Cancel',
+                  color: const Color(0xFFDCD8D8),
+                  onTap: _isSubmitting
+                      ? () {}
+                      : () => Navigator.of(context).pop(),
+                ).paddingHorizontal(20.w),
+              ],
+            ),
           ),
         ),
       ),

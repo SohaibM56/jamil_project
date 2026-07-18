@@ -83,58 +83,60 @@ class _EditCardDialogState extends State<_EditCardDialog> {
         ),
         child: SafeArea(
           top: false,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 50.w,
-                height: 5.h,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF707070),
-                  borderRadius: BorderRadius.circular(99.r),
-                ),
-              ),
-              60.h.height,
-              _EditCardField(controller: nameController, hintText: 'Name'),
-              35.h.height,
-              _EditCardField(controller: titleController, hintText: 'Title'),
-              35.h.height,
-              _EditCardField(
-                controller: phoneController,
-                hintText: 'Phone',
-                keyboardType: TextInputType.phone,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9+\-\s()]')),
-                ],
-              ),
-              50.h.height,
-              Row(
-                children: [
-                  _isSubmitting
-                      ? SizedBox(
-                          width: 24.w,
-                          height: 24.w,
-                          child: const CircularProgressIndicator(
-                            color: AppColors.primaryTeal,
-                            strokeWidth: 2,
-                          ),
-                        )
-                      : _TextAction(
-                          label: 'Update',
-                          color: AppColors.primaryTeal,
-                          onTap: () => _submit(context),
-                        ),
-                  const Spacer(),
-                  _TextAction(
-                    label: 'Cancel',
-                    color: const Color(0xFFFF5157),
-                    onTap: _isSubmitting
-                        ? () {}
-                        : () => Navigator.of(context).pop(),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 50.w,
+                  height: 5.h,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF707070),
+                    borderRadius: BorderRadius.circular(99.r),
                   ),
-                ],
-              ),
-            ],
+                ),
+                60.h.height,
+                _EditCardField(controller: nameController, hintText: 'Name'),
+                35.h.height,
+                _EditCardField(controller: titleController, hintText: 'Title'),
+                35.h.height,
+                _EditCardField(
+                  controller: phoneController,
+                  hintText: 'Phone',
+                  keyboardType: TextInputType.phone,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9+\-\s()]')),
+                  ],
+                ),
+                50.h.height,
+                Row(
+                  children: [
+                    _isSubmitting
+                        ? SizedBox(
+                            width: 24.w,
+                            height: 24.w,
+                            child: const CircularProgressIndicator(
+                              color: AppColors.primaryTeal,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : _TextAction(
+                            label: 'Update',
+                            color: AppColors.primaryTeal,
+                            onTap: () => _submit(context),
+                          ),
+                    const Spacer(),
+                    _TextAction(
+                      label: 'Cancel',
+                      color: const Color(0xFFFF5157),
+                      onTap: _isSubmitting
+                          ? () {}
+                          : () => Navigator.of(context).pop(),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

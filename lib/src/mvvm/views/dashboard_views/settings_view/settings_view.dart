@@ -23,18 +23,19 @@ class SettingsView extends StatelessWidget {
     final dashboardController = Get.find<DashboardController>();
 
     return SafeArea(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          50.h.height,
-          Text(
-            "Settings",
-            style: AppTextStyles.customText34(
-              fontWeight: FontWeight.w800,
-              color: Colors.black,
-              fontFamily: AppTextStyles.clashDisplay,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            50.h.height,
+            Text(
+              "Settings",
+              style: AppTextStyles.customText34(
+                fontWeight: FontWeight.w800,
+                color: Colors.black,
+                fontFamily: AppTextStyles.clashDisplay,
+              ),
             ),
-          ),
 
           30.h.height,
 
@@ -179,7 +180,7 @@ class SettingsView extends StatelessWidget {
             () => GestureDetector(
               onTap: authController.isLoading.value
                   ? null
-                  : () => _confirmDeleteAccount(context, authController),
+                  : () async => await authController.deleteAccount(),
               child: Container(
                 height: 52.h,
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -213,41 +214,9 @@ class SettingsView extends StatelessWidget {
           ),
         ],
       ).paddingHorizontal(30.w),
-    );
-  }
-}
-
-Future<void> _confirmDeleteAccount(
-  BuildContext context,
-  AuthController authController,
-) async {
-  final confirmed = await showDialog<bool>(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: const Text('Delete account?'),
-      content: const Text(
-        'This permanently deletes your account and your public card. '
-        'This action cannot be undone.',
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(false),
-          child: const Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(true),
-          child: const Text(
-            'Delete',
-            style: TextStyle(color: Color(0xFFF84E55)),
-          ),
-        ),
-      ],
     ),
   );
-
-  if (confirmed == true) {
-    await authController.deleteAccount();
-  }
+}
 }
 
 class _SettingsOption extends StatelessWidget {
