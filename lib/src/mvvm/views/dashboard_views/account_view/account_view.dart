@@ -15,6 +15,7 @@ import 'package:jamil_project/src/widgets/avatar_source_dialog.dart';
 import 'package:jamil_project/src/widgets/dashboard_icons.dart';
 import 'package:jamil_project/src/widgets/dashboard_loading_state.dart';
 import 'package:jamil_project/src/widgets/edit_card_dialog.dart';
+import 'package:jamil_project/src/widgets/my_card_tile.dart';
 import 'package:jamil_project/src/widgets/responsive_switch.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -53,170 +54,44 @@ class AccountView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              45.h.height,
+              40.h.height,
               Text(
                 "My Card",
-                style: AppTextStyles.customText34(
+                style: AppTextStyles.customText28(
                   fontWeight: FontWeight.w800,
                   color: Colors.black,
                   fontFamily: AppTextStyles.clashDisplay,
                 ),
               ),
-              2.h.height,
+              4.h.height,
               Text(
                 "Tap, Connect, Share",
-                style: AppTextStyles.customText28(
+                style: AppTextStyles.customText18(
                   fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                  color: Colors.black.withValues(alpha: 0.7),
                   fontFamily: AppTextStyles.clashDisplay,
                 ),
               ),
-              30.h.height,
+              28.h.height,
               Obx(() {
                 final card = dashboardController.card.value;
-                final imageUrl = card?.profileImageUrl ?? '';
 
-                return Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      height: 180.h,
-                      padding: EdgeInsets.fromLTRB(30.w, 40.h, 20.w, 20.h),
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryTealLight,
-                        border: Border.all(color: Colors.black, width: 2.w),
-                        borderRadius: BorderRadius.circular(14.r),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.1),
-                            blurRadius: 20.r,
-                            offset: Offset(0, 10.h),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            card?.name ?? '',
-                            style: AppTextStyles.customText30(
-                              fontWeight: FontWeight.w600,
-                              fontFamily: AppTextStyles.clashDisplay,
-                            ),
-                          ),
-                          Text(
-                            card?.title ?? '',
-                            style: AppTextStyles.customText24(
-                              fontWeight: FontWeight.w600,
-                              fontFamily: AppTextStyles.clashDisplay,
-                            ),
-                          ),
-                          2.h.height,
-                          Text(
-                            card?.phone ?? '',
-                            style: AppTextStyles.customText20(
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                              fontFamily: AppTextStyles.clashDisplay,
-                            ),
-                          ),
-                          Text(
-                            card?.email ?? '',
-                            style: AppTextStyles.customText18(
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                              fontFamily: AppTextStyles.clashDisplay,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ).paddingHorizontal(5.w),
-                    Positioned(
-                      top: -10.h,
-                      right: -10.w,
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Container(
-                            width: 110.w,
-                            height: 110.w,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.black,
-                                width: 2.w,
-                              ),
-                              image: imageUrl.isEmpty
-                                  ? null
-                                  : DecorationImage(
-                                      image: NetworkImage(imageUrl),
-                                      fit: BoxFit.cover,
-                                    ),
-                            ),
-                            child: dashboardController.isUpdatingPhoto.value
-                                ? const Center(
-                                    child: CircularProgressIndicator(
-                                      color: AppColors.primaryTeal,
-                                      strokeWidth: 2,
-                                    ),
-                                  )
-                                : (imageUrl.isEmpty
-                                      ? Icon(
-                                          Icons.person_outline,
-                                          color: const Color(0xFFB0B0B0),
-                                          size: 40.sp,
-                                        )
-                                      : null),
-                          ),
-                          Positioned(
-                            top: 2.h,
-                            right: 2.w,
-                            child: GestureDetector(
-                              onTap: () =>
-                                  _updatePhoto(context, dashboardController),
-                              child: Container(
-                                padding: EdgeInsets.all(5.w),
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFF666666),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  Icons.edit,
-                                  size: 12.sp,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      right: 15.w,
-                      bottom: 15.h,
-                      child: Column(
-                        children: [
-                          _SmallRoundIcon(
-                            icon: Icons.edit,
-                            onTap: () => showEditCardDialog(
-                              context: context,
-                              initialName: card?.name ?? '',
-                              initialTitle: card?.title ?? '',
-                              initialPhone: card?.phone ?? '',
-                              onUpdate: dashboardController.updateAccountInfo,
-                            ),
-                          ),
-                          8.h.height,
-                          _SmallRoundIcon(
-                            icon: Icons.visibility_outlined,
-                            onTap: () => _openPublicCard(dashboardController),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                return MyCardTile(
+                  name: card?.name ?? '',
+                  title: card?.title ?? '',
+                  phone: card?.phone ?? '',
+                  email: card?.email ?? '',
+                  imageUrl: card?.profileImageUrl ?? '',
+                  isUpdatingPhoto: dashboardController.isUpdatingPhoto.value,
+                  onEditPhoto: () => _updatePhoto(context, dashboardController),
+                  onEditCard: () => showEditCardDialog(
+                    context: context,
+                    initialName: card?.name ?? '',
+                    initialTitle: card?.title ?? '',
+                    initialPhone: card?.phone ?? '',
+                    onUpdate: dashboardController.updateAccountInfo,
+                  ),
+                  onViewPublic: () => _openPublicCard(dashboardController),
                 );
               }),
               42.h.height,
@@ -350,25 +225,6 @@ class AccountView extends StatelessWidget {
     if (cropped == null) return;
 
     await dashboardController.updatePhoto(File(cropped.path));
-  }
-}
-
-class _SmallRoundIcon extends StatelessWidget {
-  const _SmallRoundIcon({required this.icon, this.onTap});
-
-  final IconData icon;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: CircleAvatar(
-        radius: 10.r,
-        backgroundColor: Colors.black.withValues(alpha: 0.62),
-        child: Icon(icon, size: 10.sp, color: Colors.white),
-      ),
-    );
   }
 }
 
