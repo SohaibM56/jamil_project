@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 
 import 'package:jamil_project/src/repos/auth_repository.dart';
@@ -12,18 +14,29 @@ class AuthController extends GetxController {
   final AuthRepository _authRepository;
   final isLoading = false.obs;
   final isAuthenticated = false.obs;
+  StreamSubscription<bool>? _blockSub;
 
   @override
   void onInit() {
     super.onInit();
     isAuthenticated.value = _authRepository.isLoggedIn();
+    if (isAuthenticated.value) {
+      _startBlockedListener(_authRepository.currentUid!);
+    }
   }
+
+  @override
+  void onClose() {
+    _blockSub?.cancel();
+    super.onClose();
+  }
+
 
   Future<void> login(String email, String password) async {
     await _runAuthAction(() async {
       await _authRepository.login(email, password);
       isAuthenticated.value = true;
-      Get.offAllNamed(AppRoute.dashboard.path);
+      _startBlockedListener(_authRepository.currentUid!);
       AppSnackbar.success('Welcome back', 'Logged in successfully.');
     });
   }
@@ -42,6 +55,7 @@ class AuthController extends GetxController {
         phone: phone,
       );
       isAuthenticated.value = true;
+      _startBlockedListener(_authRepository.currentUid!);
       Get.offAllNamed(AppRoute.dashboard.path);
       AppSnackbar.success('Welcome', 'Account created successfully.');
     });
@@ -49,6 +63,8 @@ class AuthController extends GetxController {
 
   Future<void> logout() async {
     await _runAuthAction(() async {
+      await _blockSub?.cancel();
+      _blockSub = null;
       await _authRepository.logout();
       isAuthenticated.value = false;
       Get.offAllNamed(AppRoute.login.path);
@@ -64,6 +80,8 @@ class AuthController extends GetxController {
     if (password == null) return;
 
     await _runAuthAction(() async {
+      await _blockSub?.cancel();
+      _blockSub = null;
       await _authRepository.deleteAccount(password);
       isAuthenticated.value = false;
       Get.offAllNamed(AppRoute.login.path);
@@ -79,6 +97,18 @@ class AuthController extends GetxController {
         'Check your email',
         'A password reset link has been sent to $email.',
       );
+    });
+  }
+
+  void _startBlockedListener(String uid) {
+    _blockSub?.cancel();
+    _blockSub = _authRepository.watchBlocked(uid).listen((isBlocked) {
+      if (isBlocked) {
+        Get.offAllNamed(AppRoute.blocked.path);
+      }
+      else{
+        Get.offAllNamed(AppRoute.dashboard.path);
+      }
     });
   }
 

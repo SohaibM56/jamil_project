@@ -12,11 +12,12 @@ import 'package:jamil_project/src/repos/storage_repository.dart';
 import 'package:jamil_project/src/mvvm/viewModels/splash_controller/splash_controller.dart';
 import 'package:jamil_project/src/mvvm/views/splash_view/splash_view.dart';
 
+import '../mvvm/views/auth_views/blocked_view/blocked_view.dart';
 import '../mvvm/views/auth_views/forgot_view/forgot_view.dart';
 import '../mvvm/views/auth_views/login_view/login_view.dart';
 import '../mvvm/views/auth_views/signup_view/signup_view.dart';
 
-enum AppRoute { splash, login, signup, forgot, dashboard }
+enum AppRoute { splash, login, signup, forgot, dashboard, blocked }
 
 extension AppRoutePath on AppRoute {
   String get path {
@@ -31,6 +32,8 @@ extension AppRoutePath on AppRoute {
         return '/forgot';
       case AppRoute.dashboard:
         return '/dashboard';
+      case AppRoute.blocked:
+        return '/blocked';
     }
   }
 }
@@ -50,7 +53,7 @@ class AppPages {
       name: AppRoute.login.path,
       page: () => LoginView(),
       binding: BindingsBuilder(
-        () => Get.lazyPut<LoginController>(() => LoginController()),
+        () => Get.put<LoginController>(LoginController()),
       ),
       middlewares: [AuthMiddleware()],
     ),
@@ -58,7 +61,7 @@ class AppPages {
       name: AppRoute.signup.path,
       page: () => SignupView(),
       binding: BindingsBuilder(
-        () => Get.lazyPut<SignupController>(() => SignupController()),
+        () => Get.put<SignupController>(SignupController()),
       ),
       middlewares: [AuthMiddleware()],
     ),
@@ -66,7 +69,7 @@ class AppPages {
       name: AppRoute.forgot.path,
       page: () => ForgotView(),
       binding: BindingsBuilder(
-        () => Get.lazyPut<ForgotController>(() => ForgotController()),
+        () => Get.put<ForgotController>(ForgotController()),
       ),
       middlewares: [AuthMiddleware()],
     ),
@@ -82,6 +85,10 @@ class AppPages {
         ),
       ),
       middlewares: [AuthMiddleware()],
+    ),
+    GetPage(
+      name: AppRoute.blocked.path,
+      page: () => const BlockedView(),
     ),
   ];
 }

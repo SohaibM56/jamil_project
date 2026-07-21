@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class RequiresRecentLoginException implements Exception {
   const RequiresRecentLoginException();
+
   @override
   String toString() => 'Please log out and log back in, then try again.';
 }
@@ -23,7 +24,10 @@ class AuthRepository {
 
   Future<void> signup({required String email, required String password, required String name, required String phone,}) async {
     try {
-      final credential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      final credential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
       final uid = credential.user!.uid;
       final cardRef = _firestore.collection('cards').doc();
 
@@ -33,6 +37,7 @@ class AuthRepository {
         'phone': phone,
         'name': name,
         'cardId': cardRef.id,
+        'isBlocked': false,
         'createdAt': FieldValue.serverTimestamp(),
       });
       batch.set(cardRef, {
@@ -42,6 +47,7 @@ class AuthRepository {
         'phone': phone,
         'email': email,
         'profileImageUrl': '',
+        'isBlocked': false,
         'links': <String, dynamic>{},
         'updatedAt': FieldValue.serverTimestamp(),
       });
@@ -112,6 +118,16 @@ class AuthRepository {
   }
 
   bool isLoggedIn() => _auth.currentUser != null;
+
+  String? get currentUid => _auth.currentUser?.uid;
+
+  Stream<bool> watchBlocked(String uid) {
+    return _firestore
+        .collection('users')
+        .doc(uid)
+        .snapshots()
+        .map((snapshot) => snapshot.data()?['isBlocked'] == true);
+  }
 
   String _messageFor(FirebaseAuthException error) {
     switch (error.code) {
